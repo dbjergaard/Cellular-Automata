@@ -1,0 +1,168 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <cstdio>
+#include <cstdlib>
+#include <vector>
+#include <bitset>
+#include <map>
+#include <ctime>
+
+//length of Cellular Automata
+#define SIZE 50
+//How many generations should be iterated
+#define TMAX 15
+
+using std::cout;
+using std::endl;
+using std::map;
+using std::cerr;
+using std::endl;
+using std::bitset;
+using std::ofstream;
+using std::string;
+// Typedefs for concision 
+typedef std::vector<std::bitset<SIZE> > BitSetVec;
+typedef BitSetVec::iterator BitSetIt;
+
+void printXpmHeader(ofstream& xpmOutput, string fname)
+{
+  xpmOutput.open(fname.c_str());
+  xpmOutput<< "/* XPM */\n";
+  xpmOutput<<"static char * test_xpm[] = {"<<endl;
+  xpmOutput<<"\""<<SIZE<<" "<<TMAX<<" 2 1\","<<endl;
+  xpmOutput<<"\"1 c black\","<<endl;
+  xpmOutput<<"\"0 c white\","<<endl;
+  return;
+}
+void writeXpm(ofstream& xpmOutput)
+{
+  xpmOutput<<"};"<<endl;
+  if(xpmOutput.is_open())
+    xpmOutput.close();
+}
+void runSim(int ruleNum,bitset<SIZE> currentState)
+{
+  map<int,bitset<3> > truthMap;
+  truthMap[0]=bitset<3>((string)"000");
+  truthMap[1]=bitset<3>((string)"001");
+  truthMap[2]=bitset<3>((string)"010");
+  truthMap[3]=bitset<3>((string)"011");
+  truthMap[4]=bitset<3>((string)"100");
+  truthMap[5]=bitset<3>((string)"101");
+  truthMap[6]=bitset<3>((string)"110");
+  truthMap[7]=bitset<3>((string)"111");
+    
+  ofstream xpmOutput;
+  std::stringstream ofName;
+  ofName <<"rule_num_"<<ruleNum<<".xpm";
+  printXpmHeader(xpmOutput,ofName.str());
+
+  bitset<8> truthMask=ruleNum;
+  bitset<SIZE> nextState;
+  bitset<3> slice;
+  
+  cout <<"Starting with Rule "<<ruleNum<<endl;
+  cout <<"Truth Mask is "<<truthMask<<endl;
+  //cout <<"Initial state: "<<currentState<<endl;
+  for(unsigned int j=0; j < TMAX; j++)
+    {
+      //xpmOutput<<"\""<<currentState<<"\","<<endl;
+      cout <<currentState<<endl;
+      for(unsigned int i=0; i < SIZE; i++)
+	{
+	  slice.set(0,currentState[(i-1)%SIZE]);
+	  slice.set(1,currentState[i]);
+	  slice.set(2,currentState[(i+1)%SIZE]);
+	  if(slice==truthMap[1] || slice==truthMap[2] || slice==truthMap[3] || slice==truthMap[4])
+	    nextState.set(i,1);
+	  /*
+	  for(int k=0; k<8; k++)
+	    {
+	      //cout <<"truthMask["<<k<<"]: "<<truthMask[k]<<endl;
+	      if(truthMask[k])
+		{
+		  if(slice==truthMap[k])
+		    nextState.set(i,1);
+		}
+	    }
+	  */
+	}
+      currentState=nextState;
+    }  
+  writeXpm(xpmOutput);
+  return;
+}
+void usage(const char* name)
+{
+  printf("Usage: %s [args]\n",name);
+  printf("Where [args] is one of: \n");
+  printf("-h, --help (Display this message and exit)\n");
+  printf("-r, --rand (use time to set seed for random initial conditions)\n");
+  printf("-s [num], --seed [num] (use num as a seed for random initial conditions)\n");
+  printf("-f, --fixed (default, set middle bit only for intial conditions)\n");
+  printf("-rn [0-255], --rule-num [0-255] (use rule number according to Wolfram Code)\n");
+  printf("-b, --batch (run over all 256 rules from the Wolfram Code)\n\n");
+  printf("If no options are specified the simulation is run in fixed mode with rule number 150\n");
+  printf("Files are output in the form \"rule_num_#.xpm\"\n");
+}
+
+int main(int argc, const char* argv[])
+{
+  //Options
+  
+  // Use time to set random seed
+  // Use fixed value to set random seed
+  
+  // Set initial bit randomly, or not (set the middle bit)
+  //initialize random seed (choose fixed number for repeatable results)
+
+  //specify rule number, and output prefix
+  //specify batch mode which runs all 256 rules
+
+  // set the number of generations before split
+  int ruleNum=30;
+  bool initRand=false;
+  bool batchMode=false;
+  string opt;
+  for(int i=1; i<argc; i++)
+    {
+      opt=(string)argv[i];
+      if(opt=="-h" || opt=="--help")
+	{
+	  usage(argv[0]);
+	  return -1;
+	}
+      else if(opt=="-r" || opt=="--rand")
+	{
+	  initRand=true;
+	  srand(time(NULL));
+	}
+      else if(opt=="-s" || opt=="--seed")
+	{
+	  initRand=true;
+	  srand(atoi(argv[++i]));
+	}
+      else if(opt=="-f" || opt=="--fixed")
+	initRand=false;
+      else if(opt=="-rn" || opt=="--rule-num")
+	ruleNum=atoi(argv[++i]);
+      else if(opt=="-b" || opt=="--batch")
+	batchMode=true;
+    }
+  bitset<SIZE> currentState;
+  //initialize current state randomly
+  if(initRand)
+    {
+      cout <<"Randomly initializing first state\n"<<endl;
+      for(unsigned int i=0; i < SIZE; i++)
+	currentState.set(i,rand()%2);
+    }
+  else
+    currentState.set((int)(SIZE/2),1);
+
+  if(batchMode){};//temporarily clean up warnings...
+
+  runSim(ruleNum,currentState);
+  return 0;
+}
