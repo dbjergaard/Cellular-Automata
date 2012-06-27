@@ -91,26 +91,26 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen)
     {
       printCurrentState(currentState,xpmOutput,size);
       currentState=updateState(currentState,size,truthMask);
-      if(j!=0 && size!=SIZE && j%expandGen==0)
-	{
-	for(unsigned int i=0; i < size; i++)
-	    {
-	      expandState.set(2*i,currentState[i]);
-	      expandState.set(2*i+1,currentState[i]);
-	    }
-	  //cout<<"Expanding state of size "<<size<<" at time step "<<j<<endl;
-	  size*=2;
-	  currentState=expandState;
-	}
-      else if(j!=0 && j%expandGen==0)
-	{
-	  for(unsigned int i=SIZE/4; i < 3*SIZE/4; i++)
-	    {
-	      expandState.set(2*(i-SIZE/4),currentState[i]);
-	      expandState.set(2*(i-SIZE/4)+1,currentState[i]);
-	    }
-	  currentState=expandState;
-	}
+      if(expandGen!=0 && j!=0 && size!=SIZE && j%expandGen==0)
+      	{
+      	for(unsigned int i=0; i < size; i++)
+      	    {
+      	      expandState.set(2*i,currentState[i]);
+      	      expandState.set(2*i+1,currentState[i]);
+      	    }
+      	//cout<<"Expanding state of size "<<size<<" at time step "<<j<<endl;
+      	  size*=2;
+      	  currentState=expandState;
+      	}
+      else if(expandGen!=0 && j!=0 && j%expandGen==0)
+      	{
+      	  for(unsigned int i=SIZE/4; i < 3*SIZE/4; i++)
+      	    {
+      	      expandState.set(2*(i-SIZE/4),currentState[i]);
+      	      expandState.set(2*(i-SIZE/4)+1,currentState[i]);
+      	    }
+      	  currentState=expandState;
+      	}
     }  
   writeXpm(xpmOutput);
   return;
