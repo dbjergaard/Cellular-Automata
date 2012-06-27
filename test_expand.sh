@@ -7,6 +7,6 @@ do
     mv batch-table.org tau_${i}_one_init
     cd tau_${i}_one_init 
     mogrify -format gif *.xpm
-    emacs batch-table.org --batch --eval="(org-export-as-html)"
+    emacs batch-table.org --batch --eval="(org-export-as-html)" &> /dev/null &
     cd ../   
 done

@@ -37,9 +37,13 @@ void printXpmHeader(ofstream& xpmOutput, string fname)
 }
 void writeXpm(ofstream& xpmOutput)
 {
-  xpmOutput<<"};"<<endl;
   if(xpmOutput.is_open())
-    xpmOutput.close();
+    {
+      xpmOutput<<"};"<<endl;
+      xpmOutput.close();
+    }
+  else
+    cerr<<"ERROR: could not write file!\n";
 }
 bitset<SIZE> updateState(const bitset<SIZE> currentState, const unsigned int size, const bitset<8> truthMask)
 {
@@ -61,11 +65,16 @@ bitset<SIZE> updateState(const bitset<SIZE> currentState, const unsigned int siz
 }
 void printCurrentState(const bitset<SIZE> state,ofstream& xpmOutput, const unsigned int size)
 {
-  if(size==SIZE)
-    xpmOutput<<"\""<<state<<"\","<<endl;
+  int cellSize=SIZE/size; //map each of states to a chunk of the total picture size
+  if(cellSize==1)
+    {
+      xpmOutput<<"\"";
+      for(unsigned int i=0; i < size; i++)
+	xpmOutput <<state[i];
+      xpmOutput<<"\","<<endl;
+    }
   else
     {
-      int cellSize=SIZE/size; //map each of states to a chunk of the total picture size
       xpmOutput<<"\"";
       for(unsigned int i=0; i < size; i++)
 	for(int j=0; j < cellSize; j++)
@@ -74,14 +83,14 @@ void printCurrentState(const bitset<SIZE> state,ofstream& xpmOutput, const unsig
     }
 }
 
-void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen)
+void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen, unsigned int initSize)
 {
   ofstream xpmOutput;
   std::stringstream ofName;
   unsigned int size=SIZE;
   bitset<SIZE> expandState;
   if(expandGen!=0)
-    size=2;
+    size=initSize;
   ofName <<"rule_num_"<<ruleNum<<".xpm";
   printXpmHeader(xpmOutput,ofName.str());
 
@@ -89,18 +98,16 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen)
   cout <<"Starting with Rule "<<ruleNum<<endl;
   for(unsigned int j=0; j < TMAX; j++)
     {
-      printCurrentState(currentState,xpmOutput,size);
-      currentState=updateState(currentState,size,truthMask);
       if(expandGen!=0 && j!=0 && size!=SIZE && j%expandGen==0)
       	{
-      	for(unsigned int i=0; i < size; i++)
+	  for(unsigned int i=0; i < size; i++)
       	    {
       	      expandState.set(2*i,currentState[i]);
       	      expandState.set(2*i+1,currentState[i]);
       	    }
-      	//cout<<"Expanding state of size "<<size<<" at time step "<<j<<endl;
-      	  size*=2;
+	  size*=2;
       	  currentState=expandState;
+	  //cout<<"Expanding state of size "<<size<<" at time step "<<j<<endl;
       	}
       else if(expandGen!=0 && j!=0 && j%expandGen==0)
       	{
@@ -111,6 +118,9 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen)
       	    }
       	  currentState=expandState;
       	}
+      //cout<<currentState<<endl;;
+      printCurrentState(currentState,xpmOutput,size);
+      currentState=updateState(currentState,size,truthMask);
     }  
   writeXpm(xpmOutput);
   return;
@@ -139,16 +149,19 @@ void initializeState(bitset<SIZE>& state, unsigned int size, bool initRand)
 	state.set(i,rand()%2);
     }
   else
-    state.set((int)(size/2),1);
+    state.set((unsigned int)(size/2),1);
 }
 int main(int argc, const char* argv[])
 {
 //Options
   int ruleNum=30;
   int expandGen=0; //How many generations before lattice expands
+  unsigned int initSize=2;
   bool initRand=false;
   bool batchMode=false;
   string opt;
+  // this can be easily broken (no strong type checking), but I don't
+  // care because I'm the only one running it now
   for(int i=1; i<argc; i++)
     {
       opt=(string)argv[i];
@@ -175,14 +188,17 @@ int main(int argc, const char* argv[])
 	batchMode=true;
       else if(opt=="-e" || opt=="--expand")
 	expandGen=atoi(argv[++i]);
+      else if(opt=="-i" || opt=="--init-size")
+	initSize=atoi(argv[++i]);
     }
-  bitset<SIZE> currentState;
+  bitset<SIZE> currentState;//(string("00000000000000001111000000001111"));
 
   if(expandGen!=0)
-    initializeState(currentState,2,initRand);
+    initializeState(currentState,initSize,initRand);
   else
     initializeState(currentState,SIZE,initRand);
-  
+
+
   if(batchMode)
     {
       ofstream org_table;//store results in a table to view from emacs
@@ -193,12 +209,12 @@ int main(int argc, const char* argv[])
 	  org_table <<"| "<<"[[file:rule_num_"<<i<<".gif]] Rule Number "<<i;
 	  if((i+1)%4==0)
 	    org_table<<"|\n";
-	  runSim(i,currentState,expandGen);
+	  runSim(i,currentState,expandGen,initSize);
 	}
       org_table.close();
     }
   else
-    runSim(ruleNum,currentState,expandGen);
+    runSim(ruleNum,currentState,expandGen,initSize);
 
   return 0;
 }
