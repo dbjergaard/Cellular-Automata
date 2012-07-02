@@ -31,16 +31,16 @@ void printXpmHeader(ofstream& xpmOutput, string fname, int expandGen)
   xpmOutput.open(fname.c_str());
   xpmOutput<< "/* XPM */\n";
   xpmOutput<<"static char * test_xpm[] = {"<<endl;
+  /*
   if(expandGen!=0)
     {
       xpmOutput<<"\""<<SIZE<<" "<<TMAX+(TMAX/expandGen)<<" 3 1\","<<endl;
     }
   else
-    xpmOutput<<"\""<<SIZE<<" "<<TMAX<<" 2 1\","<<endl;
+  */
+  xpmOutput<<"\""<<SIZE<<" "<<TMAX<<" 2 1\","<<endl;
   xpmOutput<<"\"1 c black\","<<endl;
   xpmOutput<<"\"0 c white\","<<endl;
-  xpmOutput<<"\"2 c red,"<<endl;
-
   return;
 }
 void writeXpm(ofstream& xpmOutput)
@@ -104,24 +104,14 @@ void printTrapezoid(ofstream& xpmOutput)
       xpmOutput<<endl;
     }
 }
-void printCurrentState(const bitset<SIZE> state,ofstream& xpmOutput, const unsigned int size)
+void printCurrentState(const bitset<SIZE> state,ofstream& xpmOutput, const unsigned int size) 
 {
   int cellSize=SIZE/size; //map each of states to a chunk of the total picture size
-  if(cellSize==1)
-    {
-      xpmOutput<<"\"";
-      for(unsigned int i=0; i < size; i++)
-	xpmOutput <<state[i];
-      xpmOutput<<"\","<<endl;
-    }
-  else
-    {
-      xpmOutput<<"\"";
-      for(unsigned int i=0; i < size; i++)
-	for(int j=0; j < cellSize; j++)
-	  xpmOutput <<state[i];
-      xpmOutput<<"\","<<endl;
-    }
+  xpmOutput<<"\"";
+  for(unsigned int i=0; i < size; i++)
+    for(int j=0; j < cellSize; j++)
+      xpmOutput <<state[i];
+  xpmOutput<<"\","<<endl;
 }
 
 void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen, unsigned int initSize)
@@ -139,7 +129,7 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen, unsigned int in
   cout <<"Starting with Rule "<<ruleNum<<endl;
   for(unsigned int j=0; j < TMAX; j++)
     {
-      printCurrentState(currentState,xpmOutput,size);
+      printCurrentState(currentState,xpmOutput,size,(expandGen!=0 && j!=0 && j%expandGen==0));
       if(expandGen!=0 && j!=0 && size!=SIZE && j%expandGen==0)
       	{
 	  for(unsigned int i=0; i < size; i++)
@@ -150,30 +140,16 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen, unsigned int in
 	  size*=2;
       	  currentState=expandState;
 
-	  //cout<<"Expanding state of size "<<size<<" at time step "<<j<<endl;
-      	}
+	}
       else if(expandGen!=0 && j!=0 && j%expandGen==0)
       	{
       	  for(unsigned int i=SIZE/4; i < 3*SIZE/4; i++)
       	    {
-	      //cout <<currentState[i]<<currentState[i];
       	      expandState.set(2*(i-SIZE/4),currentState[i]);
       	      expandState.set(2*(i-SIZE/4)+1,currentState[i]);
       	    }
       	  currentState=expandState;
-	  //printTrapezoid(xpmOutput);
-	  /*
-	  cout<<endl;
-	  for(unsigned int i=0; i < SIZE; i++)
-	    cout<<currentState[i];
-	  cout<<endl;
-	  */
-	  xpmOutput<<"\"";
-	  for(unsigned int i=0; i < SIZE; i++)
-	    xpmOutput<<2;
-	  xpmOutput<<"\",\n";
       	}
-      //cout<<currentState<<endl;;
       currentState=updateState(currentState,size,truthMask);
     }  
   writeXpm(xpmOutput);
