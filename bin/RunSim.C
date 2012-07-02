@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cstdio>
 #include <cstdlib>
+#include <cmath>
 #include <vector>
 #include <bitset>
 #include <map>
@@ -10,11 +11,11 @@
 
 //length of Cellular Automata
 //IMPORTANT: MUST BE POWER OF 2
-#define SIZE 256
+#define SIZE 64
 
 //How many generations should be iterated
 // Can be any number, but if equal to size, produced picture is a nice square
-#define TMAX 256
+#define TMAX 128
 
 using std::cout;
 using std::endl;
@@ -25,14 +26,21 @@ using std::bitset;
 using std::ofstream;
 using std::string;
 
-void printXpmHeader(ofstream& xpmOutput, string fname)
+void printXpmHeader(ofstream& xpmOutput, string fname, int expandGen)
 {
   xpmOutput.open(fname.c_str());
   xpmOutput<< "/* XPM */\n";
   xpmOutput<<"static char * test_xpm[] = {"<<endl;
-  xpmOutput<<"\""<<SIZE<<" "<<TMAX<<" 2 1\","<<endl;
+  if(expandGen!=0)
+    {
+      xpmOutput<<"\""<<SIZE<<" "<<TMAX+(TMAX/expandGen)<<" 3 1\","<<endl;
+    }
+  else
+    xpmOutput<<"\""<<SIZE<<" "<<TMAX<<" 2 1\","<<endl;
   xpmOutput<<"\"1 c black\","<<endl;
   xpmOutput<<"\"0 c white\","<<endl;
+  xpmOutput<<"\"2 c red,"<<endl;
+
   return;
 }
 void writeXpm(ofstream& xpmOutput)
@@ -48,20 +56,53 @@ void writeXpm(ofstream& xpmOutput)
 bitset<SIZE> updateState(const bitset<SIZE> currentState, const unsigned int size, const bitset<8> truthMask)
 {
   bitset<SIZE> nextState;
-
+  
   //update mechanism borrowed from: 
   //Paul Bourke 
   //http://local.wasp.uwa.edu.au/~pbourke/fractals/ca/
   int k=0;
+  bool fixedBc=false;
   for(unsigned int i=0; i < size; i++)
     {
       //compute position in "truthtable" based on previous state. Also is super fast. 
-      k=4*currentState[(i-1+size)%size] + 
-	2*currentState[i] + 
-	currentState[(i+1)%size];
+	k=4*currentState[(i-1+size)%size] + 
+	  2*currentState[i] + 
+	  currentState[(i+1)%size];
+	if(fixedBc)
+	  {
+	    if(i==0)
+	      k=4+2*currentState[i]+currentState[(i+1)%size];
+	    else if(i+1 == size)
+	      k=4*currentState[(i-1+size)%size] + 2*currentState[i] + 1;
+	  }
       nextState.set(i,truthMask[k]);
     }
   return nextState;
+}
+void printTrapezoid(ofstream& xpmOutput)
+{
+  double m = (32+0.0)/SIZE;
+  double diffLeft=0.0;
+  double diffRight=0.0;
+  for(int j=0; j >= -8; --j)
+    { 
+      xpmOutput<<"\"";
+      for(unsigned int i=0; i < SIZE; i++)
+	{
+	  diffLeft=j+8.-m*i;
+	  diffRight=j+m*(i-0.75*SIZE);
+	  if( ((diffLeft <1) && (diffLeft >=0 )) ||  ((diffRight <1) && (diffRight >=0 )))
+	    {
+	      xpmOutput<<1;
+	    }
+	  else
+	    {
+	      xpmOutput<<0;
+	    }
+	}
+      xpmOutput<<"\",";
+      xpmOutput<<endl;
+    }
 }
 void printCurrentState(const bitset<SIZE> state,ofstream& xpmOutput, const unsigned int size)
 {
@@ -92,12 +133,13 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen, unsigned int in
   if(expandGen!=0)
     size=initSize;
   ofName <<"rule_num_"<<ruleNum<<".xpm";
-  printXpmHeader(xpmOutput,ofName.str());
+  printXpmHeader(xpmOutput,ofName.str(),expandGen);
 
   bitset<8> truthMask=ruleNum;
   cout <<"Starting with Rule "<<ruleNum<<endl;
   for(unsigned int j=0; j < TMAX; j++)
     {
+      printCurrentState(currentState,xpmOutput,size);
       if(expandGen!=0 && j!=0 && size!=SIZE && j%expandGen==0)
       	{
 	  for(unsigned int i=0; i < size; i++)
@@ -107,19 +149,31 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen, unsigned int in
       	    }
 	  size*=2;
       	  currentState=expandState;
+
 	  //cout<<"Expanding state of size "<<size<<" at time step "<<j<<endl;
       	}
       else if(expandGen!=0 && j!=0 && j%expandGen==0)
       	{
       	  for(unsigned int i=SIZE/4; i < 3*SIZE/4; i++)
       	    {
+	      //cout <<currentState[i]<<currentState[i];
       	      expandState.set(2*(i-SIZE/4),currentState[i]);
       	      expandState.set(2*(i-SIZE/4)+1,currentState[i]);
       	    }
       	  currentState=expandState;
+	  //printTrapezoid(xpmOutput);
+	  /*
+	  cout<<endl;
+	  for(unsigned int i=0; i < SIZE; i++)
+	    cout<<currentState[i];
+	  cout<<endl;
+	  */
+	  xpmOutput<<"\"";
+	  for(unsigned int i=0; i < SIZE; i++)
+	    xpmOutput<<2;
+	  xpmOutput<<"\",\n";
       	}
       //cout<<currentState<<endl;;
-      printCurrentState(currentState,xpmOutput,size);
       currentState=updateState(currentState,size,truthMask);
     }  
   writeXpm(xpmOutput);
@@ -135,18 +189,24 @@ void usage(const char* name)
   printf("-f, --fixed (default, set middle bit only for intial conditions)\n");
   printf("-rn [0-255], --rule-num [0-255] (use rule number according to Wolfram Code)\n");
   printf("-b, --batch (run over all 256 rules from the Wolfram Code)\n");
-  printf("-e --expand [num] (run with lattice doubling in size every [num] generations\n");
+  printf("-e --expand [num] (run with lattice doubling in size every [num] generations)\n");
+  printf("-i --init-size [num] (sets initial number of cells)");
+  printf("-in --init-num [num] (sets initial bits using integer)");
   printf("\t if [num] is zero the lattice doesn't expand (default behavior))\n\n");
   printf("If no options are specified the simulation is run in fixed mode with rule number 30\n");
   printf("Files are output in the form \"rule_num_#.xpm\"\n");
 }
-void initializeState(bitset<SIZE>& state, unsigned int size, bool initRand)
+    void initializeState(bitset<SIZE>& state, unsigned int size, bool initRand, int initNum)
 {
   if(initRand)
     {
       cout <<"Randomly initializing first " <<size<<" states\n"<<endl;
       for(unsigned int i=0; i < size; i++)
 	state.set(i,rand()%2);
+    }
+  else if(initNum >= 0)
+    {
+      state=bitset<SIZE>(initNum);
     }
   else
     state.set((unsigned int)(size/2),1);
@@ -155,6 +215,7 @@ int main(int argc, const char* argv[])
 {
 //Options
   int ruleNum=30;
+  int initNum=-1;
   int expandGen=0; //How many generations before lattice expands
   unsigned int initSize=2;
   bool initRand=false;
@@ -190,14 +251,21 @@ int main(int argc, const char* argv[])
 	expandGen=atoi(argv[++i]);
       else if(opt=="-i" || opt=="--init-size")
 	initSize=atoi(argv[++i]);
+      else if(opt=="-in" || opt=="--init-num")
+	initNum=atoi(argv[++i]);
     }
   bitset<SIZE> currentState;//(string("00000000000000001111000000001111"));
+  if(initSize>SIZE)
+    initSize=SIZE;
 
   if(expandGen!=0)
-    initializeState(currentState,initSize,initRand);
+    initializeState(currentState,initSize,initRand,initNum);
   else
-    initializeState(currentState,SIZE,initRand);
-
+    initializeState(currentState,SIZE,initRand,initNum);
+  if(expandGen !=0 && TMAX%expandGen!=0)
+    {
+      cout <<"Warning: expandGen: "<<expandGen<<" is not an integral multiple of TMAX: "<<TMAX<<endl;
+    }
 
   if(batchMode)
     {
