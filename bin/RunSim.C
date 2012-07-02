@@ -28,7 +28,8 @@ using std::string;
 
 void printXpmHeader(ofstream& xpmOutput, string fname, int expandGen)
 {
-  xpmOutput.open(fname.c_str());
+  if(!xpmOutput.is_open())
+    xpmOutput.open(fname.c_str());
   xpmOutput<< "/* XPM */\n";
   xpmOutput<<"static char * test_xpm[] = {"<<endl;
   if(expandGen!=0)
@@ -47,7 +48,7 @@ void writeXpm(ofstream& xpmOutput)
 {
   if(xpmOutput.is_open())
     {
-      xpmOutput<<"};"<<endl;
+      //xpmOutput<<"};"<<endl;
       xpmOutput.close();
     }
   else
@@ -107,33 +108,26 @@ void printTrapezoid(ofstream& xpmOutput)
 void printCurrentState(const bitset<SIZE> state,ofstream& xpmOutput, const unsigned int size)
 {
   int cellSize=SIZE/size; //map each of states to a chunk of the total picture size
-  if(cellSize==1)
-    {
-      xpmOutput<<"\"";
-      for(unsigned int i=0; i < size; i++)
-	xpmOutput <<state[i];
-      xpmOutput<<"\","<<endl;
-    }
-  else
-    {
-      xpmOutput<<"\"";
-      for(unsigned int i=0; i < size; i++)
-	for(int j=0; j < cellSize; j++)
-	  xpmOutput <<state[i];
-      xpmOutput<<"\","<<endl;
-    }
+  //xpmOutput<<"\"";
+  for(unsigned int i=0; i < size; i++)
+    for(int j=0; j < cellSize; j++)
+      xpmOutput <<state[i]<<",";
+  xpmOutput<<endl;
+  //xpmOutput<<"\","<<endl;
 }
 
 void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen, unsigned int initSize)
 {
   ofstream xpmOutput;
+
   std::stringstream ofName;
   unsigned int size=SIZE;
   bitset<SIZE> expandState;
   if(expandGen!=0)
     size=initSize;
-  ofName <<"rule_num_"<<ruleNum<<".xpm";
-  printXpmHeader(xpmOutput,ofName.str(),expandGen);
+  ofName <<"rule_num_"<<ruleNum<<".csv";
+  xpmOutput.open(ofName.str().c_str());
+  //printXpmHeader(xpmOutput,ofName.str(),expandGen);
 
   bitset<8> truthMask=ruleNum;
   cout <<"Starting with Rule "<<ruleNum<<endl;
@@ -149,31 +143,16 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen, unsigned int in
       	    }
 	  size*=2;
       	  currentState=expandState;
-
-	  //cout<<"Expanding state of size "<<size<<" at time step "<<j<<endl;
       	}
       else if(expandGen!=0 && j!=0 && j%expandGen==0)
       	{
       	  for(unsigned int i=SIZE/4; i < 3*SIZE/4; i++)
       	    {
-	      //cout <<currentState[i]<<currentState[i];
       	      expandState.set(2*(i-SIZE/4),currentState[i]);
       	      expandState.set(2*(i-SIZE/4)+1,currentState[i]);
       	    }
       	  currentState=expandState;
-	  //printTrapezoid(xpmOutput);
-	  /*
-	  cout<<endl;
-	  for(unsigned int i=0; i < SIZE; i++)
-	    cout<<currentState[i];
-	  cout<<endl;
-	  */
-	  xpmOutput<<"\"";
-	  for(unsigned int i=0; i < SIZE; i++)
-	    xpmOutput<<2;
-	  xpmOutput<<"\",\n";
       	}
-      //cout<<currentState<<endl;;
       currentState=updateState(currentState,size,truthMask);
     }  
   writeXpm(xpmOutput);
@@ -194,7 +173,7 @@ void usage(const char* name)
   printf("-in --init-num [num] (sets initial bits using integer)");
   printf("\t if [num] is zero the lattice doesn't expand (default behavior))\n\n");
   printf("If no options are specified the simulation is run in fixed mode with rule number 30\n");
-  printf("Files are output in the form \"rule_num_#.xpm\"\n");
+  printf("Files are output in the form \"rule_num_#.csv\"\n");
 }
     void initializeState(bitset<SIZE>& state, unsigned int size, bool initRand, int initNum)
 {
@@ -274,7 +253,7 @@ int main(int argc, const char* argv[])
       org_table << "| <c> | <c> | <c> | <c> |"<<endl;
       for(unsigned int i=0; i<256; i++)
 	{
-	  org_table <<"| "<<"[[file:rule_num_"<<i<<".gif]] Rule Number "<<i;
+	  org_table <<"| "<<"[[file:rule_num_"<<i<<".csv]] Rule Number "<<i;
 	  if((i+1)%4==0)
 	    org_table<<"|\n";
 	  runSim(i,currentState,expandGen,initSize);
