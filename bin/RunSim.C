@@ -184,6 +184,18 @@ void initializeState(bitset<SIZE>& state, bool initRand, int initNum)
 }
 int main(int argc, const char* argv[])
 {
+  //all 88 unique fules
+  int uniqueRuleTable[]=
+    {0,1,2,3,4,5,6,7,8,9,
+     10,11,12,13,14,15,18,19,22,23,
+     24,25,26,27,28,29,30,32,33,34,
+     35,36,37,38,40,41,42,43,44,45,
+     46,50,51,54,56,57,58,60,62,72,
+     73,74,76,77,78,90,94,104,105,106,
+     108,110,122,126,128,130,132,134,136,138,
+     140,142,146,150,152,154,156,160,162,164,
+     168,170,172,178,184,200,204,232};
+  
 //Options
   int ruleNum=30;
   int initNum=-1;
@@ -235,12 +247,12 @@ int main(int argc, const char* argv[])
       ofstream org_table;//store results in a table to view from emacs
       org_table.open("batch-table.org");
       org_table << "| <c> | <c> | <c> | <c> |"<<endl;
-      for(unsigned int i=0; i<128; i++)
+      for(unsigned int i=0; i<88; i++)
 	{
-	  org_table <<"| "<<"[[file:rule_num_"<<i<<".gif]] Rule Number "<<i<<" Complement: "<<255-i;
+	  org_table <<"| "<<"[[file:rule_num_"<<uniqueRuleTable[i]<<".gif]] Rule Number "<<uniqueRuleTable[i];
 	  if((i+1)%4==0)
 	    org_table<<"|\n";
-	  runSim(i,currentState,expandGen);
+	  runSim(uniqueRuleTable[i],currentState,expandGen);
 	}
       org_table.close();
     }
