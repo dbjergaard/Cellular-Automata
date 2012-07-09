@@ -11,11 +11,11 @@
 
 //length of Cellular Automata
 //IMPORTANT: MUST BE POWER OF 2
-#define SIZE 16
+#define SIZE 32
 
 //How many generations should be iterated
 // Can be any number, but if equal to size, produced picture is a nice square
-#define TMAX 32
+#define TMAX 64
 
 using std::cout;
 using std::endl;
@@ -26,24 +26,6 @@ using std::bitset;
 using std::ofstream;
 using std::string;
 
-void printXpmHeader(ofstream& xpmOutput, string fname, int expandGen)
-{
-  if(!xpmOutput.is_open())
-    xpmOutput.open(fname.c_str());
-  xpmOutput<< "/* XPM */\n";
-  xpmOutput<<"static char * test_xpm[] = {"<<endl;
-  if(expandGen!=0)
-    {
-      xpmOutput<<"\""<<SIZE<<" "<<TMAX+(TMAX/expandGen)<<" 3 1\","<<endl;
-    }
-  else
-    xpmOutput<<"\""<<SIZE<<" "<<TMAX<<" 2 1\","<<endl;
-  xpmOutput<<"\"1 c black\","<<endl;
-  xpmOutput<<"\"0 c white\","<<endl;
-  xpmOutput<<"\"2 c red,"<<endl;
-
-  return;
-}
 void writeXpm(ofstream& xpmOutput)
 {
   if(xpmOutput.is_open())
@@ -79,34 +61,8 @@ bitset<SIZE> updateState(const bitset<SIZE> currentState, const bitset<8> truthM
     }
   return nextState;
 }
-void printTrapezoid(ofstream& xpmOutput)
-{
-  double m = (32+0.0)/SIZE;
-  double diffLeft=0.0;
-  double diffRight=0.0;
-  for(int j=0; j >= -8; --j)
-    { 
-      xpmOutput<<"\"";
-      for(unsigned int i=0; i < SIZE; i++)
-	{
-	  diffLeft=j+8.-m*i;
-	  diffRight=j+m*(i-0.75*SIZE);
-	  if( ((diffLeft <1) && (diffLeft >=0 )) ||  ((diffRight <1) && (diffRight >=0 )))
-	    {
-	      xpmOutput<<1;
-	    }
-	  else
-	    {
-	      xpmOutput<<0;
-	    }
-	}
-      xpmOutput<<"\",";
-      xpmOutput<<endl;
-    }
-}
 void printCurrentState(const bitset<SIZE> state,ofstream& xpmOutput,bool doubleGen)
 {
-  //xpmOutput<<"\"";
   for(unsigned int i=0; i < SIZE; i++)
     {
       xpmOutput<<state[i];
@@ -116,7 +72,6 @@ void printCurrentState(const bitset<SIZE> state,ofstream& xpmOutput,bool doubleG
 	xpmOutput<<","<<doubleGen+2;
     }
   xpmOutput<<endl;
-  //xpmOutput<<"\","<<endl;
 }
 
 void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen)
@@ -127,7 +82,6 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen)
   bitset<SIZE> expandState;
   ofName <<"rule_num_"<<ruleNum<<".csv";
   xpmOutput.open(ofName.str().c_str());
-  //printXpmHeader(xpmOutput,ofName.str(),expandGen);
 
   bitset<8> truthMask=ruleNum;
   cout <<"Starting with Rule "<<ruleNum<<endl;
@@ -234,7 +188,7 @@ int main(int argc, const char* argv[])
       else if(opt=="-in" || opt=="--init-num")
 	initNum=atoi(argv[++i]);
     }
-  bitset<SIZE> currentState;//(string("00000000000000001111000000001111"));
+  bitset<SIZE> currentState;
 
   initializeState(currentState,initRand,initNum);
   if(expandGen !=0 && TMAX%expandGen!=0)
