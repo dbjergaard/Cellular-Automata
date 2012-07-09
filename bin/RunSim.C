@@ -160,7 +160,7 @@ void usage(const char* name)
   printf("-s [num], --seed [num] (use num as a seed for random initial conditions)\n");
   printf("-f, --fixed (default, set middle bit only for intial conditions)\n");
   printf("-rn [0-255], --rule-num [0-255] (use rule number according to Wolfram Code)\n");
-  printf("-b, --batch (run over all 256 rules from the Wolfram Code)\n");
+  printf("-b, --batch (run over first 128 rules from the Wolfram Code)\n");
   printf("-e --expand [num] (run with lattice doubling in size every [num] generations)\n");
   printf("-in --init-num [num] (sets initial bits using integer)");
   printf("\t if [num] is zero the lattice doesn't expand (default behavior))\n\n");
@@ -235,9 +235,9 @@ int main(int argc, const char* argv[])
       ofstream org_table;//store results in a table to view from emacs
       org_table.open("batch-table.org");
       org_table << "| <c> | <c> | <c> | <c> |"<<endl;
-      for(unsigned int i=0; i<256; i++)
+      for(unsigned int i=0; i<128; i++)
 	{
-	  org_table <<"| "<<"[[file:rule_num_"<<i<<".csv]] Rule Number "<<i;
+	  org_table <<"| "<<"[[file:rule_num_"<<i<<".gif]] Rule Number "<<i<<" Complement: "<<255-i;
 	  if((i+1)%4==0)
 	    org_table<<"|\n";
 	  runSim(i,currentState,expandGen);

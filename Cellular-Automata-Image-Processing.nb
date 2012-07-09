@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     10628,        301]
-NotebookOptionsPosition[     10001,        274]
-NotebookOutlinePosition[     10357,        290]
-CellTagsIndexPosition[     10314,        287]
+NotebookDataLength[     61557,       1128]
+NotebookOptionsPosition[     61096,       1108]
+NotebookOutlinePosition[     61455,       1124]
+CellTagsIndexPosition[     61412,       1121]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -23,22 +23,13 @@ Cell[BoxData[{
   RowBox[{"SetDirectory", "[", "\"\<~/Cellular-Automata\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"data", "=", 
-   RowBox[{"Import", "[", "\"\<./rule_num_30.csv\>\"", "]"}]}], 
-  ";"}]}], "Input",
- CellChangeTimes->{{3.550246121919367*^9, 3.550246125489211*^9}, {
-   3.550246219632543*^9, 3.550246240794677*^9}, {3.550246298471204*^9, 
-   3.550246299665358*^9}, 3.550246339083281*^9, {3.550246761511365*^9, 
-   3.550246762159284*^9}, {3.550249704561325*^9, 3.550249720662942*^9}, {
-   3.550249781502624*^9, 3.550249818167727*^9}, {3.550250325533043*^9, 
-   3.550250371023018*^9}, {3.5502505032315617`*^9, 3.5502505505106707`*^9}, {
-   3.5504225358178368`*^9, 3.550422536321097*^9}}],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[{
+  RowBox[{"Width", "=", "16"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"pic", "=", 
+  RowBox[{"Height", "=", "32"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"makePic", "[", 
+    RowBox[{"Width_", ",", "Height_", ",", "data_"}], "]"}], ":=", 
    RowBox[{"Table", "[", 
     RowBox[{
      RowBox[{"{", 
@@ -49,7 +40,7 @@ Cell[BoxData[{
           RowBox[{"data", "[", 
            RowBox[{"[", 
             RowBox[{"j", ",", "i"}], "]"}], "]"}], "\[Equal]", "1"}], ",", 
-         "White", ",", "Black"}], "]"}], ",", 
+         "Black", ",", "White"}], "]"}], ",", 
        RowBox[{"Polygon", "[", 
         RowBox[{"{", 
          RowBox[{
@@ -69,8 +60,9 @@ Cell[BoxData[{
                 RowBox[{"data", "[", 
                  RowBox[{"[", 
                   RowBox[{
-                   RowBox[{"j", "+", "1"}], ",", "17"}], "]"}], "]"}], "-", 
-                "1"}], ")"}], 
+                   RowBox[{"j", "+", "1"}], ",", 
+                   RowBox[{"Width", "+", "1"}]}], "]"}], "]"}], "-", "1"}], 
+               ")"}], 
               RowBox[{"(", 
                RowBox[{"i", "+", "1"}], ")"}]}], "-", 
              RowBox[{
@@ -79,8 +71,9 @@ Cell[BoxData[{
                 RowBox[{"data", "[", 
                  RowBox[{"[", 
                   RowBox[{
-                   RowBox[{"j", "+", "1"}], ",", "17"}], "]"}], "]"}], "-", 
-                "2"}], ")"}], "9"}]}], ",", 
+                   RowBox[{"j", "+", "1"}], ",", 
+                   RowBox[{"Width", "+", "1"}]}], "]"}], "]"}], "-", "2"}], 
+               ")"}], "9"}]}], ",", 
             RowBox[{
              RowBox[{"-", "j"}], "-", "1"}]}], "}"}], ",", 
           RowBox[{"{", 
@@ -92,8 +85,9 @@ Cell[BoxData[{
                 RowBox[{"data", "[", 
                  RowBox[{"[", 
                   RowBox[{
-                   RowBox[{"j", "+", "1"}], ",", "17"}], "]"}], "]"}], "-", 
-                "1"}], ")"}], 
+                   RowBox[{"j", "+", "1"}], ",", 
+                   RowBox[{"Width", "+", "1"}]}], "]"}], "]"}], "-", "1"}], 
+               ")"}], 
               RowBox[{"(", "i", ")"}]}], "-", 
              RowBox[{
               RowBox[{"(", 
@@ -101,39 +95,754 @@ Cell[BoxData[{
                 RowBox[{"data", "[", 
                  RowBox[{"[", 
                   RowBox[{
-                   RowBox[{"j", "+", "1"}], ",", "17"}], "]"}], "]"}], "-", 
-                "2"}], ")"}], "9"}]}], ",", 
+                   RowBox[{"j", "+", "1"}], ",", 
+                   RowBox[{"Width", "+", "1"}]}], "]"}], "]"}], "-", "2"}], 
+               ")"}], "9"}]}], ",", 
             RowBox[{
              RowBox[{"-", "j"}], "-", "1"}]}], "}"}]}], "}"}], "]"}]}], "}"}],
       ",", 
      RowBox[{"{", 
-      RowBox[{"i", ",", "1", ",", "16"}], "}"}], ",", 
+      RowBox[{"i", ",", "1", ",", "Width"}], "}"}], ",", 
      RowBox[{"{", 
-      RowBox[{"j", ",", "1", ",", "38"}], "}"}]}], "]"}]}], 
+      RowBox[{"j", ",", "1", ",", "Height"}], "}"}]}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
- RowBox[{"Export", "[", 
-  RowBox[{"\"\<rule_num_30.gif\>\"", ",", 
-   RowBox[{"Graphics", "[", 
-    RowBox[{"pic", ",", 
-     RowBox[{"PlotRange", "\[Rule]", 
-      RowBox[{"{", 
-       RowBox[{
+ RowBox[{
+  RowBox[{"Run", "[", "\"\<./RunSim -s 137 -b -e 4\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"data", "=", 
+   RowBox[{"Import", "[", "\"\<./rule_num_30.csv\>\"", "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.550246121919367*^9, 3.550246125489211*^9}, {
+   3.550246219632543*^9, 3.550246240794677*^9}, {3.550246298471204*^9, 
+   3.550246299665358*^9}, 3.550246339083281*^9, {3.550246761511365*^9, 
+   3.550246762159284*^9}, {3.550249704561325*^9, 3.550249720662942*^9}, {
+   3.550249781502624*^9, 3.550249818167727*^9}, {3.550250325533043*^9, 
+   3.550250371023018*^9}, {3.5502505032315617`*^9, 3.5502505505106707`*^9}, {
+   3.5504225358178368`*^9, 3.550422536321097*^9}, {3.550840434753912*^9, 
+   3.550840453750888*^9}, {3.550840623221726*^9, 3.550840709537601*^9}, {
+   3.5508409580484858`*^9, 3.55084097769206*^9}, {3.55084101018687*^9, 
+   3.550841028002184*^9}, {3.55084132747211*^9, 3.550841332343677*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"pic", "=", 
+    RowBox[{"makePic", "[", 
+     RowBox[{"Width", ",", "Height", ",", "data"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Export", "[", 
+    RowBox[{"\"\<rule_num_30.gif\>\"", ",", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"pic", ",", 
+       RowBox[{"PlotRange", "\[Rule]", 
         RowBox[{"{", 
-         RowBox[{"1", ",", "17"}], "}"}], ",", "All"}], "}"}]}]}], "]"}]}], 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"1", ",", "17"}], "}"}], ",", "All"}], "}"}]}]}], "]"}]}], 
+    "]"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Graphics", "[", 
+  RowBox[{"pic", ",", 
+   RowBox[{"PlotRange", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"1", ",", 
+        RowBox[{"Width", "+", "1"}]}], "}"}], ",", "All"}], "}"}]}]}], 
   "]"}]}], "Input",
  CellChangeTimes->CompressedData["
-1:eJwdzEsowwEAx/G/TZk5IA7zfrRicmAO/kpsiaZ/HuGCPEbzzGyojYt5FA5C
-XkttsRbJlikNCyuH5T1Wo8yB0shh8k8uKP/f//Dtc/umtPRWKTgEQSQxQYo7
-17Dd/y6d1bZ1wjdKr4bjeUF98KH9TQsjog2DMLWRGIZB0qdpaNIdLUPjj2cd
-PlpjbZCf5d6DNEUewgEfxwlH5ys9UEbz7mEzh57ZZ1xdKV+Ano9A8AG+9Z+s
-p7acMGjmC6PgsYxKgFLHRDLckrykw8JNpQj6p4pzIa2pY/WatgvgpH2nlP15
-XRWw9UlVBeP/VuqgIdHF6u/qaYe1YpUSKgJN/bCx+l4DhaExXAfjyBURAn9P
-fHxIZnZHQp28Iw2G792kw++hu3wo2F0vglazUAaNShFr/mS1Gt5q5ayvcQul
-h4xrl6Nl8Fz8tfjCmPGsW4KW+OENWFNyYYG8JJsdkmPUAaQFEU5I2ClWvYS8
-hn3ZZ274D4TTCPY=
+1:eJwdzFtIUwEAh/HjNLL54GKCWlNXjNpkYOlDE0R3CGVyWsXspXkvTDNb3sDN
+F6emTigqtBqjjRJZpTvsiDJ1TAdDRhcvNTDDGRjIEilthxFkCZ7/efj4vX2n
+btzT1QkIgjjDBan4J5Xuth3ysfHWbbhNWVvg/fy4Vrhev22EohS7CZ6uIrpg
+HLn5EI6Y555Dx7+QE27QJxgoPLcyDVlK5YPtYYEf9gxdDUENm7gGawTsoxnO
+l7bLwzC0t5swi295lPcdk5cER4UyMZzXUBmQ9A5I4bh6Sw6L3hoUMDJYfAGy
+HXre1RF3IbR4Jkr532rwCry52ayDkgObHtozg7yRxrv18HpuswHW7Va3waqy
+tQ4oO5Ye7+XsXiKOwv+BsBCqlHeOQ3Ntw1mYPP1JDv90fimAaVPOi5AelWmg
+w6DgLbCUtcDPxlreHyeHS32crxZ7tPBDbuzpFmf2d/Mz6JJ0vYbXSj66YGIW
+44GqXmoWsmkiPyQ8FK9VrVqGreffr8AXv1Npd/sOGSbDUzBnoN8L9dohXm1f
+RQCKx/YXIBELMgznt79HJmFhDh2CUuWDr/CSxfUTqnVvfsEmvykKaXIhBg8B
+hhNI+w==
   "]],
 
-Cell[BoxData["\<\"rule_num_30.gif\"\>"], "Output",
+Cell[BoxData[
+ GraphicsBox[{{
+    {GrayLevel[1], PolygonBox[{{1, -1}, {2, -1}, {2, -2}, {1, -2}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -2}, {2, -2}, {2, -3}, {1, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -3}, {2, -3}, {2, -4}, {1, -4}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -4}, {2, -4}, {2, -5}, {1, -5}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -5}, {2, -5}, {2, -6}, {1, -6}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -6}, {2, -6}, {-5, -7}, {-7, -7}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -7}, {2, -7}, {2, -8}, {1, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -8}, {2, -8}, {2, -9}, {1, -9}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -9}, {2, -9}, {2, -10}, {1, -10}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -10}, {2, -10}, {2, -11}, {1, -11}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -11}, {2, -11}, {2, -12}, {1, -12}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -12}, {2, -12}, {-5, -13}, {-7, -13}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -13}, {2, -13}, {2, -14}, {1, -14}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -14}, {2, -14}, {2, -15}, {1, -15}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -15}, {2, -15}, {2, -16}, {1, -16}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -16}, {2, -16}, {2, -17}, {1, -17}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -17}, {2, -17}, {2, -18}, {1, -18}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -18}, {2, -18}, {-5, -19}, {-7, -19}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -19}, {2, -19}, {2, -20}, {1, -20}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -20}, {2, -20}, {2, -21}, {1, -21}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -21}, {2, -21}, {2, -22}, {1, -22}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -22}, {2, -22}, {2, -23}, {1, -23}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -23}, {2, -23}, {2, -24}, {1, -24}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -24}, {2, -24}, {-5, -25}, {-7, -25}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -25}, {2, -25}, {2, -26}, {1, -26}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -26}, {2, -26}, {2, -27}, {1, -27}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -27}, {2, -27}, {2, -28}, {1, -28}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -28}, {2, -28}, {2, -29}, {1, -29}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -29}, {2, -29}, {2, -30}, {1, -30}}]}, 
+    {GrayLevel[0], PolygonBox[{{1, -30}, {2, -30}, {-5, -31}, {-7, -31}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -31}, {2, -31}, {2, -32}, {1, -32}}]}, 
+    {GrayLevel[1], PolygonBox[{{1, -32}, {2, -32}, {2, -33}, {1, -33}}]}}, {
+    {GrayLevel[0], PolygonBox[{{2, -1}, {3, -1}, {3, -2}, {2, -2}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -2}, {3, -2}, {3, -3}, {2, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -3}, {3, -3}, {3, -4}, {2, -4}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -4}, {3, -4}, {3, -5}, {2, -5}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -5}, {3, -5}, {3, -6}, {2, -6}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -6}, {3, -6}, {-3, -7}, {-5, -7}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -7}, {3, -7}, {3, -8}, {2, -8}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -8}, {3, -8}, {3, -9}, {2, -9}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -9}, {3, -9}, {3, -10}, {2, -10}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -10}, {3, -10}, {3, -11}, {2, -11}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -11}, {3, -11}, {3, -12}, {2, -12}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -12}, {3, -12}, {-3, -13}, {-5, -13}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -13}, {3, -13}, {3, -14}, {2, -14}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -14}, {3, -14}, {3, -15}, {2, -15}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -15}, {3, -15}, {3, -16}, {2, -16}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -16}, {3, -16}, {3, -17}, {2, -17}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -17}, {3, -17}, {3, -18}, {2, -18}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -18}, {3, -18}, {-3, -19}, {-5, -19}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -19}, {3, -19}, {3, -20}, {2, -20}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -20}, {3, -20}, {3, -21}, {2, -21}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -21}, {3, -21}, {3, -22}, {2, -22}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -22}, {3, -22}, {3, -23}, {2, -23}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -23}, {3, -23}, {3, -24}, {2, -24}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -24}, {3, -24}, {-3, -25}, {-5, -25}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -25}, {3, -25}, {3, -26}, {2, -26}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -26}, {3, -26}, {3, -27}, {2, -27}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -27}, {3, -27}, {3, -28}, {2, -28}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -28}, {3, -28}, {3, -29}, {2, -29}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -29}, {3, -29}, {3, -30}, {2, -30}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -30}, {3, -30}, {-3, -31}, {-5, -31}}]}, 
+    {GrayLevel[1], PolygonBox[{{2, -31}, {3, -31}, {3, -32}, {2, -32}}]}, 
+    {GrayLevel[0], PolygonBox[{{2, -32}, {3, -32}, {3, -33}, {2, -33}}]}}, {
+    {GrayLevel[0], PolygonBox[{{3, -1}, {4, -1}, {4, -2}, {3, -2}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -2}, {4, -2}, {4, -3}, {3, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -3}, {4, -3}, {4, -4}, {3, -4}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -4}, {4, -4}, {4, -5}, {3, -5}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -5}, {4, -5}, {4, -6}, {3, -6}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -6}, {4, -6}, {-1, -7}, {-3, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -7}, {4, -7}, {4, -8}, {3, -8}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -8}, {4, -8}, {4, -9}, {3, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -9}, {4, -9}, {4, -10}, {3, -10}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -10}, {4, -10}, {4, -11}, {3, -11}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -11}, {4, -11}, {4, -12}, {3, -12}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -12}, {4, -12}, {-1, -13}, {-3, -13}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -13}, {4, -13}, {4, -14}, {3, -14}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -14}, {4, -14}, {4, -15}, {3, -15}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -15}, {4, -15}, {4, -16}, {3, -16}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -16}, {4, -16}, {4, -17}, {3, -17}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -17}, {4, -17}, {4, -18}, {3, -18}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -18}, {4, -18}, {-1, -19}, {-3, -19}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -19}, {4, -19}, {4, -20}, {3, -20}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -20}, {4, -20}, {4, -21}, {3, -21}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -21}, {4, -21}, {4, -22}, {3, -22}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -22}, {4, -22}, {4, -23}, {3, -23}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -23}, {4, -23}, {4, -24}, {3, -24}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -24}, {4, -24}, {-1, -25}, {-3, -25}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -25}, {4, -25}, {4, -26}, {3, -26}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -26}, {4, -26}, {4, -27}, {3, -27}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -27}, {4, -27}, {4, -28}, {3, -28}}]}, 
+    {GrayLevel[1], PolygonBox[{{3, -28}, {4, -28}, {4, -29}, {3, -29}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -29}, {4, -29}, {4, -30}, {3, -30}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -30}, {4, -30}, {-1, -31}, {-3, -31}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -31}, {4, -31}, {4, -32}, {3, -32}}]}, 
+    {GrayLevel[0], PolygonBox[{{3, -32}, {4, -32}, {4, -33}, {3, -33}}]}}, {
+    {GrayLevel[1], PolygonBox[{{4, -1}, {5, -1}, {5, -2}, {4, -2}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -2}, {5, -2}, {5, -3}, {4, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -3}, {5, -3}, {5, -4}, {4, -4}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -4}, {5, -4}, {5, -5}, {4, -5}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -5}, {5, -5}, {5, -6}, {4, -6}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -6}, {5, -6}, {1, -7}, {-1, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -7}, {5, -7}, {5, -8}, {4, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -8}, {5, -8}, {5, -9}, {4, -9}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -9}, {5, -9}, {5, -10}, {4, -10}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -10}, {5, -10}, {5, -11}, {4, -11}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -11}, {5, -11}, {5, -12}, {4, -12}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -12}, {5, -12}, {1, -13}, {-1, -13}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -13}, {5, -13}, {5, -14}, {4, -14}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -14}, {5, -14}, {5, -15}, {4, -15}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -15}, {5, -15}, {5, -16}, {4, -16}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -16}, {5, -16}, {5, -17}, {4, -17}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -17}, {5, -17}, {5, -18}, {4, -18}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -18}, {5, -18}, {1, -19}, {-1, -19}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -19}, {5, -19}, {5, -20}, {4, -20}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -20}, {5, -20}, {5, -21}, {4, -21}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -21}, {5, -21}, {5, -22}, {4, -22}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -22}, {5, -22}, {5, -23}, {4, -23}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -23}, {5, -23}, {5, -24}, {4, -24}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -24}, {5, -24}, {1, -25}, {-1, -25}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -25}, {5, -25}, {5, -26}, {4, -26}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -26}, {5, -26}, {5, -27}, {4, -27}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -27}, {5, -27}, {5, -28}, {4, -28}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -28}, {5, -28}, {5, -29}, {4, -29}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -29}, {5, -29}, {5, -30}, {4, -30}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -30}, {5, -30}, {1, -31}, {-1, -31}}]}, 
+    {GrayLevel[0], PolygonBox[{{4, -31}, {5, -31}, {5, -32}, {4, -32}}]}, 
+    {GrayLevel[1], PolygonBox[{{4, -32}, {5, -32}, {5, -33}, {4, -33}}]}}, {
+    {GrayLevel[0], PolygonBox[{{5, -1}, {6, -1}, {6, -2}, {5, -2}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -2}, {6, -2}, {6, -3}, {5, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -3}, {6, -3}, {6, -4}, {5, -4}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -4}, {6, -4}, {6, -5}, {5, -5}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -5}, {6, -5}, {6, -6}, {5, -6}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -6}, {6, -6}, {3, -7}, {1, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -7}, {6, -7}, {6, -8}, {5, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -8}, {6, -8}, {6, -9}, {5, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -9}, {6, -9}, {6, -10}, {5, -10}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -10}, {6, -10}, {6, -11}, {5, -11}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -11}, {6, -11}, {6, -12}, {5, -12}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -12}, {6, -12}, {3, -13}, {1, -13}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -13}, {6, -13}, {6, -14}, {5, -14}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -14}, {6, -14}, {6, -15}, {5, -15}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -15}, {6, -15}, {6, -16}, {5, -16}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -16}, {6, -16}, {6, -17}, {5, -17}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -17}, {6, -17}, {6, -18}, {5, -18}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -18}, {6, -18}, {3, -19}, {1, -19}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -19}, {6, -19}, {6, -20}, {5, -20}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -20}, {6, -20}, {6, -21}, {5, -21}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -21}, {6, -21}, {6, -22}, {5, -22}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -22}, {6, -22}, {6, -23}, {5, -23}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -23}, {6, -23}, {6, -24}, {5, -24}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -24}, {6, -24}, {3, -25}, {1, -25}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -25}, {6, -25}, {6, -26}, {5, -26}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -26}, {6, -26}, {6, -27}, {5, -27}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -27}, {6, -27}, {6, -28}, {5, -28}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -28}, {6, -28}, {6, -29}, {5, -29}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -29}, {6, -29}, {6, -30}, {5, -30}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -30}, {6, -30}, {3, -31}, {1, -31}}]}, 
+    {GrayLevel[0], PolygonBox[{{5, -31}, {6, -31}, {6, -32}, {5, -32}}]}, 
+    {GrayLevel[1], PolygonBox[{{5, -32}, {6, -32}, {6, -33}, {5, -33}}]}}, {
+    {GrayLevel[1], PolygonBox[{{6, -1}, {7, -1}, {7, -2}, {6, -2}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -2}, {7, -2}, {7, -3}, {6, -3}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -3}, {7, -3}, {7, -4}, {6, -4}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -4}, {7, -4}, {7, -5}, {6, -5}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -5}, {7, -5}, {7, -6}, {6, -6}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -6}, {7, -6}, {5, -7}, {3, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -7}, {7, -7}, {7, -8}, {6, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -8}, {7, -8}, {7, -9}, {6, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -9}, {7, -9}, {7, -10}, {6, -10}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -10}, {7, -10}, {7, -11}, {6, -11}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -11}, {7, -11}, {7, -12}, {6, -12}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -12}, {7, -12}, {5, -13}, {3, -13}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -13}, {7, -13}, {7, -14}, {6, -14}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -14}, {7, -14}, {7, -15}, {6, -15}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -15}, {7, -15}, {7, -16}, {6, -16}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -16}, {7, -16}, {7, -17}, {6, -17}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -17}, {7, -17}, {7, -18}, {6, -18}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -18}, {7, -18}, {5, -19}, {3, -19}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -19}, {7, -19}, {7, -20}, {6, -20}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -20}, {7, -20}, {7, -21}, {6, -21}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -21}, {7, -21}, {7, -22}, {6, -22}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -22}, {7, -22}, {7, -23}, {6, -23}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -23}, {7, -23}, {7, -24}, {6, -24}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -24}, {7, -24}, {5, -25}, {3, -25}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -25}, {7, -25}, {7, -26}, {6, -26}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -26}, {7, -26}, {7, -27}, {6, -27}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -27}, {7, -27}, {7, -28}, {6, -28}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -28}, {7, -28}, {7, -29}, {6, -29}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -29}, {7, -29}, {7, -30}, {6, -30}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -30}, {7, -30}, {5, -31}, {3, -31}}]}, 
+    {GrayLevel[0], PolygonBox[{{6, -31}, {7, -31}, {7, -32}, {6, -32}}]}, 
+    {GrayLevel[1], PolygonBox[{{6, -32}, {7, -32}, {7, -33}, {6, -33}}]}}, {
+    {GrayLevel[1], PolygonBox[{{7, -1}, {8, -1}, {8, -2}, {7, -2}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -2}, {8, -2}, {8, -3}, {7, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -3}, {8, -3}, {8, -4}, {7, -4}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -4}, {8, -4}, {8, -5}, {7, -5}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -5}, {8, -5}, {8, -6}, {7, -6}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -6}, {8, -6}, {7, -7}, {5, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -7}, {8, -7}, {8, -8}, {7, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -8}, {8, -8}, {8, -9}, {7, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -9}, {8, -9}, {8, -10}, {7, -10}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -10}, {8, -10}, {8, -11}, {7, -11}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -11}, {8, -11}, {8, -12}, {7, -12}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -12}, {8, -12}, {7, -13}, {5, -13}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -13}, {8, -13}, {8, -14}, {7, -14}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -14}, {8, -14}, {8, -15}, {7, -15}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -15}, {8, -15}, {8, -16}, {7, -16}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -16}, {8, -16}, {8, -17}, {7, -17}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -17}, {8, -17}, {8, -18}, {7, -18}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -18}, {8, -18}, {7, -19}, {5, -19}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -19}, {8, -19}, {8, -20}, {7, -20}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -20}, {8, -20}, {8, -21}, {7, -21}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -21}, {8, -21}, {8, -22}, {7, -22}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -22}, {8, -22}, {8, -23}, {7, -23}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -23}, {8, -23}, {8, -24}, {7, -24}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -24}, {8, -24}, {7, -25}, {5, -25}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -25}, {8, -25}, {8, -26}, {7, -26}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -26}, {8, -26}, {8, -27}, {7, -27}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -27}, {8, -27}, {8, -28}, {7, -28}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -28}, {8, -28}, {8, -29}, {7, -29}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -29}, {8, -29}, {8, -30}, {7, -30}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -30}, {8, -30}, {7, -31}, {5, -31}}]}, 
+    {GrayLevel[1], PolygonBox[{{7, -31}, {8, -31}, {8, -32}, {7, -32}}]}, 
+    {GrayLevel[0], PolygonBox[{{7, -32}, {8, -32}, {8, -33}, {7, -33}}]}}, {
+    {GrayLevel[1], PolygonBox[{{8, -1}, {9, -1}, {9, -2}, {8, -2}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -2}, {9, -2}, {9, -3}, {8, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -3}, {9, -3}, {9, -4}, {8, -4}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -4}, {9, -4}, {9, -5}, {8, -5}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -5}, {9, -5}, {9, -6}, {8, -6}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -6}, {9, -6}, {9, -7}, {7, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -7}, {9, -7}, {9, -8}, {8, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -8}, {9, -8}, {9, -9}, {8, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -9}, {9, -9}, {9, -10}, {8, -10}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -10}, {9, -10}, {9, -11}, {8, -11}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -11}, {9, -11}, {9, -12}, {8, -12}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -12}, {9, -12}, {9, -13}, {7, -13}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -13}, {9, -13}, {9, -14}, {8, -14}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -14}, {9, -14}, {9, -15}, {8, -15}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -15}, {9, -15}, {9, -16}, {8, -16}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -16}, {9, -16}, {9, -17}, {8, -17}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -17}, {9, -17}, {9, -18}, {8, -18}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -18}, {9, -18}, {9, -19}, {7, -19}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -19}, {9, -19}, {9, -20}, {8, -20}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -20}, {9, -20}, {9, -21}, {8, -21}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -21}, {9, -21}, {9, -22}, {8, -22}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -22}, {9, -22}, {9, -23}, {8, -23}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -23}, {9, -23}, {9, -24}, {8, -24}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -24}, {9, -24}, {9, -25}, {7, -25}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -25}, {9, -25}, {9, -26}, {8, -26}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -26}, {9, -26}, {9, -27}, {8, -27}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -27}, {9, -27}, {9, -28}, {8, -28}}]}, 
+    {GrayLevel[0], PolygonBox[{{8, -28}, {9, -28}, {9, -29}, {8, -29}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -29}, {9, -29}, {9, -30}, {8, -30}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -30}, {9, -30}, {9, -31}, {7, -31}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -31}, {9, -31}, {9, -32}, {8, -32}}]}, 
+    {GrayLevel[1], PolygonBox[{{8, -32}, {9, -32}, {9, -33}, {8, -33}}]}}, {
+    {GrayLevel[1], PolygonBox[{{9, -1}, {10, -1}, {10, -2}, {9, -2}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -2}, {10, -2}, {10, -3}, {9, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -3}, {10, -3}, {10, -4}, {9, -4}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -4}, {10, -4}, {10, -5}, {9, -5}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -5}, {10, -5}, {10, -6}, {9, -6}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -6}, {10, -6}, {11, -7}, {9, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -7}, {10, -7}, {10, -8}, {9, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -8}, {10, -8}, {10, -9}, {9, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -9}, {10, -9}, {10, -10}, {9, -10}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -10}, {10, -10}, {10, -11}, {9, -11}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -11}, {10, -11}, {10, -12}, {9, -12}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -12}, {10, -12}, {11, -13}, {9, -13}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -13}, {10, -13}, {10, -14}, {9, -14}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -14}, {10, -14}, {10, -15}, {9, -15}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -15}, {10, -15}, {10, -16}, {9, -16}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -16}, {10, -16}, {10, -17}, {9, -17}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -17}, {10, -17}, {10, -18}, {9, -18}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -18}, {10, -18}, {11, -19}, {9, -19}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -19}, {10, -19}, {10, -20}, {9, -20}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -20}, {10, -20}, {10, -21}, {9, -21}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -21}, {10, -21}, {10, -22}, {9, -22}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -22}, {10, -22}, {10, -23}, {9, -23}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -23}, {10, -23}, {10, -24}, {9, -24}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -24}, {10, -24}, {11, -25}, {9, -25}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -25}, {10, -25}, {10, -26}, {9, -26}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -26}, {10, -26}, {10, -27}, {9, -27}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -27}, {10, -27}, {10, -28}, {9, -28}}]}, 
+    {GrayLevel[0], PolygonBox[{{9, -28}, {10, -28}, {10, -29}, {9, -29}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -29}, {10, -29}, {10, -30}, {9, -30}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -30}, {10, -30}, {11, -31}, {9, -31}}]}, 
+    {GrayLevel[1], PolygonBox[{{9, -31}, {10, -31}, {10, -32}, {9, -32}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{9, -32}, {10, -32}, {10, -33}, {9, -33}}]}}, {
+    {GrayLevel[0], PolygonBox[{{10, -1}, {11, -1}, {11, -2}, {10, -2}}]}, 
+    {GrayLevel[0], PolygonBox[{{10, -2}, {11, -2}, {11, -3}, {10, -3}}]}, 
+    {GrayLevel[1], PolygonBox[{{10, -3}, {11, -3}, {11, -4}, {10, -4}}]}, 
+    {GrayLevel[0], PolygonBox[{{10, -4}, {11, -4}, {11, -5}, {10, -5}}]}, 
+    {GrayLevel[0], PolygonBox[{{10, -5}, {11, -5}, {11, -6}, {10, -6}}]}, 
+    {GrayLevel[0], PolygonBox[{{10, -6}, {11, -6}, {13, -7}, {11, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{10, -7}, {11, -7}, {11, -8}, {10, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{10, -8}, {11, -8}, {11, -9}, {10, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{10, -9}, {11, -9}, {11, -10}, {10, -10}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -10}, {11, -10}, {11, -11}, {10, -11}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -11}, {11, -11}, {11, -12}, {10, -12}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -12}, {11, -12}, {13, -13}, {11, -13}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -13}, {11, -13}, {11, -14}, {10, -14}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -14}, {11, -14}, {11, -15}, {10, -15}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -15}, {11, -15}, {11, -16}, {10, -16}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -16}, {11, -16}, {11, -17}, {10, -17}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -17}, {11, -17}, {11, -18}, {10, -18}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -18}, {11, -18}, {13, -19}, {11, -19}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -19}, {11, -19}, {11, -20}, {10, -20}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -20}, {11, -20}, {11, -21}, {10, -21}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -21}, {11, -21}, {11, -22}, {10, -22}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -22}, {11, -22}, {11, -23}, {10, -23}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -23}, {11, -23}, {11, -24}, {10, -24}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -24}, {11, -24}, {13, -25}, {11, -25}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -25}, {11, -25}, {11, -26}, {10, -26}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -26}, {11, -26}, {11, -27}, {10, -27}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -27}, {11, -27}, {11, -28}, {10, -28}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -28}, {11, -28}, {11, -29}, {10, -29}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -29}, {11, -29}, {11, -30}, {10, -30}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -30}, {11, -30}, {13, -31}, {11, -31}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{10, -31}, {11, -31}, {11, -32}, {10, -32}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{10, -32}, {11, -32}, {11, -33}, {10, -33}}]}}, {
+    {GrayLevel[0], PolygonBox[{{11, -1}, {12, -1}, {12, -2}, {11, -2}}]}, 
+    {GrayLevel[1], PolygonBox[{{11, -2}, {12, -2}, {12, -3}, {11, -3}}]}, 
+    {GrayLevel[1], PolygonBox[{{11, -3}, {12, -3}, {12, -4}, {11, -4}}]}, 
+    {GrayLevel[0], PolygonBox[{{11, -4}, {12, -4}, {12, -5}, {11, -5}}]}, 
+    {GrayLevel[1], PolygonBox[{{11, -5}, {12, -5}, {12, -6}, {11, -6}}]}, 
+    {GrayLevel[1], PolygonBox[{{11, -6}, {12, -6}, {15, -7}, {13, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{11, -7}, {12, -7}, {12, -8}, {11, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{11, -8}, {12, -8}, {12, -9}, {11, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{11, -9}, {12, -9}, {12, -10}, {11, -10}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -10}, {12, -10}, {12, -11}, {11, -11}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -11}, {12, -11}, {12, -12}, {11, -12}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -12}, {12, -12}, {15, -13}, {13, -13}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -13}, {12, -13}, {12, -14}, {11, -14}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -14}, {12, -14}, {12, -15}, {11, -15}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{11, -15}, {12, -15}, {12, -16}, {11, -16}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{11, -16}, {12, -16}, {12, -17}, {11, -17}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -17}, {12, -17}, {12, -18}, {11, -18}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -18}, {12, -18}, {15, -19}, {13, -19}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -19}, {12, -19}, {12, -20}, {11, -20}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -20}, {12, -20}, {12, -21}, {11, -21}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{11, -21}, {12, -21}, {12, -22}, {11, -22}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{11, -22}, {12, -22}, {12, -23}, {11, -23}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -23}, {12, -23}, {12, -24}, {11, -24}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -24}, {12, -24}, {15, -25}, {13, -25}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{11, -25}, {12, -25}, {12, -26}, {11, -26}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{11, -26}, {12, -26}, {12, -27}, {11, -27}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -27}, {12, -27}, {12, -28}, {11, -28}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{11, -28}, {12, -28}, {12, -29}, {11, -29}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{11, -29}, {12, -29}, {12, -30}, {11, -30}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{11, -30}, {12, -30}, {15, -31}, {13, -31}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -31}, {12, -31}, {12, -32}, {11, -32}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{11, -32}, {12, -32}, {12, -33}, {11, -33}}]}}, {
+    {GrayLevel[1], PolygonBox[{{12, -1}, {13, -1}, {13, -2}, {12, -2}}]}, 
+    {GrayLevel[0], PolygonBox[{{12, -2}, {13, -2}, {13, -3}, {12, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{12, -3}, {13, -3}, {13, -4}, {12, -4}}]}, 
+    {GrayLevel[0], PolygonBox[{{12, -4}, {13, -4}, {13, -5}, {12, -5}}]}, 
+    {GrayLevel[1], PolygonBox[{{12, -5}, {13, -5}, {13, -6}, {12, -6}}]}, 
+    {GrayLevel[1], PolygonBox[{{12, -6}, {13, -6}, {17, -7}, {15, -7}}]}, 
+    {GrayLevel[0], PolygonBox[{{12, -7}, {13, -7}, {13, -8}, {12, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{12, -8}, {13, -8}, {13, -9}, {12, -9}}]}, 
+    {GrayLevel[0], PolygonBox[{{12, -9}, {13, -9}, {13, -10}, {12, -10}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -10}, {13, -10}, {13, -11}, {12, -11}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{12, -11}, {13, -11}, {13, -12}, {12, -12}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{12, -12}, {13, -12}, {17, -13}, {15, -13}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -13}, {13, -13}, {13, -14}, {12, -14}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{12, -14}, {13, -14}, {13, -15}, {12, -15}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -15}, {13, -15}, {13, -16}, {12, -16}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -16}, {13, -16}, {13, -17}, {12, -17}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -17}, {13, -17}, {13, -18}, {12, -18}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -18}, {13, -18}, {17, -19}, {15, -19}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -19}, {13, -19}, {13, -20}, {12, -20}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{12, -20}, {13, -20}, {13, -21}, {12, -21}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -21}, {13, -21}, {13, -22}, {12, -22}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -22}, {13, -22}, {13, -23}, {12, -23}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -23}, {13, -23}, {13, -24}, {12, -24}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -24}, {13, -24}, {17, -25}, {15, -25}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{12, -25}, {13, -25}, {13, -26}, {12, -26}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -26}, {13, -26}, {13, -27}, {12, -27}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -27}, {13, -27}, {13, -28}, {12, -28}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{12, -28}, {13, -28}, {13, -29}, {12, -29}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{12, -29}, {13, -29}, {13, -30}, {12, -30}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{12, -30}, {13, -30}, {17, -31}, {15, -31}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{12, -31}, {13, -31}, {13, -32}, {12, -32}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{12, -32}, {13, -32}, {13, -33}, {12, -33}}]}}, {
+    {GrayLevel[1], PolygonBox[{{13, -1}, {14, -1}, {14, -2}, {13, -2}}]}, 
+    {GrayLevel[0], PolygonBox[{{13, -2}, {14, -2}, {14, -3}, {13, -3}}]}, 
+    {GrayLevel[1], PolygonBox[{{13, -3}, {14, -3}, {14, -4}, {13, -4}}]}, 
+    {GrayLevel[0], PolygonBox[{{13, -4}, {14, -4}, {14, -5}, {13, -5}}]}, 
+    {GrayLevel[1], PolygonBox[{{13, -5}, {14, -5}, {14, -6}, {13, -6}}]}, 
+    {GrayLevel[1], PolygonBox[{{13, -6}, {14, -6}, {19, -7}, {17, -7}}]}, 
+    {GrayLevel[1], PolygonBox[{{13, -7}, {14, -7}, {14, -8}, {13, -8}}]}, 
+    {GrayLevel[0], PolygonBox[{{13, -8}, {14, -8}, {14, -9}, {13, -9}}]}, 
+    {GrayLevel[0], PolygonBox[{{13, -9}, {14, -9}, {14, -10}, {13, -10}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -10}, {14, -10}, {14, -11}, {13, -11}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -11}, {14, -11}, {14, -12}, {13, -12}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -12}, {14, -12}, {19, -13}, {17, -13}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -13}, {14, -13}, {14, -14}, {13, -14}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -14}, {14, -14}, {14, -15}, {13, -15}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -15}, {14, -15}, {14, -16}, {13, -16}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -16}, {14, -16}, {14, -17}, {13, -17}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -17}, {14, -17}, {14, -18}, {13, -18}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -18}, {14, -18}, {19, -19}, {17, -19}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -19}, {14, -19}, {14, -20}, {13, -20}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -20}, {14, -20}, {14, -21}, {13, -21}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -21}, {14, -21}, {14, -22}, {13, -22}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -22}, {14, -22}, {14, -23}, {13, -23}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -23}, {14, -23}, {14, -24}, {13, -24}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -24}, {14, -24}, {19, -25}, {17, -25}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -25}, {14, -25}, {14, -26}, {13, -26}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -26}, {14, -26}, {14, -27}, {13, -27}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -27}, {14, -27}, {14, -28}, {13, -28}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -28}, {14, -28}, {14, -29}, {13, -29}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -29}, {14, -29}, {14, -30}, {13, -30}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -30}, {14, -30}, {19, -31}, {17, -31}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{13, -31}, {14, -31}, {14, -32}, {13, -32}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{13, -32}, {14, -32}, {14, -33}, {13, -33}}]}}, {
+    {GrayLevel[0], PolygonBox[{{14, -1}, {15, -1}, {15, -2}, {14, -2}}]}, 
+    {GrayLevel[0], PolygonBox[{{14, -2}, {15, -2}, {15, -3}, {14, -3}}]}, 
+    {GrayLevel[1], PolygonBox[{{14, -3}, {15, -3}, {15, -4}, {14, -4}}]}, 
+    {GrayLevel[0], PolygonBox[{{14, -4}, {15, -4}, {15, -5}, {14, -5}}]}, 
+    {GrayLevel[1], PolygonBox[{{14, -5}, {15, -5}, {15, -6}, {14, -6}}]}, 
+    {GrayLevel[1], PolygonBox[{{14, -6}, {15, -6}, {21, -7}, {19, -7}}]}, 
+    {GrayLevel[1], PolygonBox[{{14, -7}, {15, -7}, {15, -8}, {14, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{14, -8}, {15, -8}, {15, -9}, {14, -9}}]}, 
+    {GrayLevel[0], PolygonBox[{{14, -9}, {15, -9}, {15, -10}, {14, -10}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -10}, {15, -10}, {15, -11}, {14, -11}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -11}, {15, -11}, {15, -12}, {14, -12}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -12}, {15, -12}, {21, -13}, {19, -13}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -13}, {15, -13}, {15, -14}, {14, -14}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -14}, {15, -14}, {15, -15}, {14, -15}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -15}, {15, -15}, {15, -16}, {14, -16}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -16}, {15, -16}, {15, -17}, {14, -17}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -17}, {15, -17}, {15, -18}, {14, -18}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -18}, {15, -18}, {21, -19}, {19, -19}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -19}, {15, -19}, {15, -20}, {14, -20}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -20}, {15, -20}, {15, -21}, {14, -21}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -21}, {15, -21}, {15, -22}, {14, -22}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -22}, {15, -22}, {15, -23}, {14, -23}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -23}, {15, -23}, {15, -24}, {14, -24}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -24}, {15, -24}, {21, -25}, {19, -25}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -25}, {15, -25}, {15, -26}, {14, -26}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -26}, {15, -26}, {15, -27}, {14, -27}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -27}, {15, -27}, {15, -28}, {14, -28}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -28}, {15, -28}, {15, -29}, {14, -29}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -29}, {15, -29}, {15, -30}, {14, -30}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{14, -30}, {15, -30}, {21, -31}, {19, -31}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -31}, {15, -31}, {15, -32}, {14, -32}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{14, -32}, {15, -32}, {15, -33}, {14, -33}}]}}, {
+    {GrayLevel[0], PolygonBox[{{15, -1}, {16, -1}, {16, -2}, {15, -2}}]}, 
+    {GrayLevel[1], PolygonBox[{{15, -2}, {16, -2}, {16, -3}, {15, -3}}]}, 
+    {GrayLevel[0], PolygonBox[{{15, -3}, {16, -3}, {16, -4}, {15, -4}}]}, 
+    {GrayLevel[0], PolygonBox[{{15, -4}, {16, -4}, {16, -5}, {15, -5}}]}, 
+    {GrayLevel[1], PolygonBox[{{15, -5}, {16, -5}, {16, -6}, {15, -6}}]}, 
+    {GrayLevel[1], PolygonBox[{{15, -6}, {16, -6}, {23, -7}, {21, -7}}]}, 
+    {GrayLevel[1], PolygonBox[{{15, -7}, {16, -7}, {16, -8}, {15, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{15, -8}, {16, -8}, {16, -9}, {15, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{15, -9}, {16, -9}, {16, -10}, {15, -10}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -10}, {16, -10}, {16, -11}, {15, -11}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -11}, {16, -11}, {16, -12}, {15, -12}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -12}, {16, -12}, {23, -13}, {21, -13}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -13}, {16, -13}, {16, -14}, {15, -14}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -14}, {16, -14}, {16, -15}, {15, -15}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -15}, {16, -15}, {16, -16}, {15, -16}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -16}, {16, -16}, {16, -17}, {15, -17}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -17}, {16, -17}, {16, -18}, {15, -18}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -18}, {16, -18}, {23, -19}, {21, -19}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -19}, {16, -19}, {16, -20}, {15, -20}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -20}, {16, -20}, {16, -21}, {15, -21}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -21}, {16, -21}, {16, -22}, {15, -22}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -22}, {16, -22}, {16, -23}, {15, -23}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -23}, {16, -23}, {16, -24}, {15, -24}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -24}, {16, -24}, {23, -25}, {21, -25}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -25}, {16, -25}, {16, -26}, {15, -26}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -26}, {16, -26}, {16, -27}, {15, -27}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -27}, {16, -27}, {16, -28}, {15, -28}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{15, -28}, {16, -28}, {16, -29}, {15, -29}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -29}, {16, -29}, {16, -30}, {15, -30}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -30}, {16, -30}, {23, -31}, {21, -31}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -31}, {16, -31}, {16, -32}, {15, -32}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{15, -32}, {16, -32}, {16, -33}, {15, -33}}]}}, {
+    {GrayLevel[0], PolygonBox[{{16, -1}, {17, -1}, {17, -2}, {16, -2}}]}, 
+    {GrayLevel[1], PolygonBox[{{16, -2}, {17, -2}, {17, -3}, {16, -3}}]}, 
+    {GrayLevel[1], PolygonBox[{{16, -3}, {17, -3}, {17, -4}, {16, -4}}]}, 
+    {GrayLevel[1], PolygonBox[{{16, -4}, {17, -4}, {17, -5}, {16, -5}}]}, 
+    {GrayLevel[1], PolygonBox[{{16, -5}, {17, -5}, {17, -6}, {16, -6}}]}, 
+    {GrayLevel[1], PolygonBox[{{16, -6}, {17, -6}, {25, -7}, {23, -7}}]}, 
+    {GrayLevel[1], PolygonBox[{{16, -7}, {17, -7}, {17, -8}, {16, -8}}]}, 
+    {GrayLevel[1], PolygonBox[{{16, -8}, {17, -8}, {17, -9}, {16, -9}}]}, 
+    {GrayLevel[1], PolygonBox[{{16, -9}, {17, -9}, {17, -10}, {16, -10}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{16, -10}, {17, -10}, {17, -11}, {16, -11}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -11}, {17, -11}, {17, -12}, {16, -12}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -12}, {17, -12}, {25, -13}, {23, -13}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -13}, {17, -13}, {17, -14}, {16, -14}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -14}, {17, -14}, {17, -15}, {16, -15}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{16, -15}, {17, -15}, {17, -16}, {16, -16}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -16}, {17, -16}, {17, -17}, {16, -17}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -17}, {17, -17}, {17, -18}, {16, -18}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -18}, {17, -18}, {25, -19}, {23, -19}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{16, -19}, {17, -19}, {17, -20}, {16, -20}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -20}, {17, -20}, {17, -21}, {16, -21}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{16, -21}, {17, -21}, {17, -22}, {16, -22}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{16, -22}, {17, -22}, {17, -23}, {16, -23}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -23}, {17, -23}, {17, -24}, {16, -24}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -24}, {17, -24}, {25, -25}, {23, -25}}]}, 
+    {GrayLevel[0], 
+     PolygonBox[{{16, -25}, {17, -25}, {17, -26}, {16, -26}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -26}, {17, -26}, {17, -27}, {16, -27}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -27}, {17, -27}, {17, -28}, {16, -28}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -28}, {17, -28}, {17, -29}, {16, -29}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -29}, {17, -29}, {17, -30}, {16, -30}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -30}, {17, -30}, {25, -31}, {23, -31}}]}, 
+    {GrayLevel[1], 
+     PolygonBox[{{16, -31}, {17, -31}, {17, -32}, {16, -32}}]}, 
+    {GrayLevel[1], PolygonBox[{{16, -32}, {17, -32}, {17, -33}, {16, -33}}]}}},
+  PlotRange->{{1, 17}, All}]], "Output",
  CellChangeTimes->{{3.5503332492817783`*^9, 3.550333260586609*^9}, 
    3.550333371530368*^9, 3.5503335898039017`*^9, 3.550333706654833*^9, {
    3.5503337619842243`*^9, 3.550333813032001*^9}, {3.550333861949972*^9, 
@@ -144,19 +853,221 @@ Cell[BoxData["\<\"rule_num_30.gif\"\>"], "Output",
    3.550339694210773*^9}, {3.550340012815578*^9, 3.550340033660366*^9}, {
    3.550422185158033*^9, 3.550422196611249*^9}, {3.550422336177864*^9, 
    3.5504223752542048`*^9}, {3.5504224610716743`*^9, 3.550422475580797*^9}, 
-   3.550422658299096*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"Run", "[", "\"\<./RunSim -s 137 -b -e 4\>\"", "]"}]], "Input",
- CellChangeTimes->{{3.550422897029455*^9, 3.550422944501482*^9}, {
-  3.550422982270155*^9, 3.550423019230178*^9}}],
-
-Cell[BoxData["0"], "Output",
- CellChangeTimes->{{3.550422932476717*^9, 3.550422946164597*^9}, 
-   3.550423021250689*^9}]
+   3.550422658299096*^9, 3.55083808481146*^9, {3.55083814943349*^9, 
+   3.550838186636572*^9}, 3.550838232184092*^9, {3.550838271342404*^9, 
+   3.550838276484756*^9}, 3.5508383136419897`*^9, {3.550840205230659*^9, 
+   3.5508402218774147`*^9}, {3.550840519219575*^9, 3.550840534448291*^9}, {
+   3.550840736930194*^9, 3.5508407510596867`*^9}, 3.550841034827016*^9, 
+   3.550841338066037*^9},
+ ImageCache->GraphicsData["CompressedBitmap", "\<\
+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
+T0NgNojlZDZnFW2bfvGLX8DEtVCZVyuxnObz+cTysmfPni3mzb969SrMrQsV
+Wkos5/P3yjurasuor68X86ZOmzZNrHfT7373O4OOf/3rX2LepIULF4q2xKee
+ekosL2nDhg1CeVInz5sbueLbG7OpfSj9fkMr4xFbyPfwsefNkfLQlfGhP51P
+tIgW0SJaRItoES2iRbSIFtEiWjcVrQQ2g4adhiFIViWWE1evXg0blENgNojl
+pJaWFti4uUCpRYnlTWx2K+ZN+cMf/gDrSyEwG8RyVnt7u5g3l79X3sUhNp4u
+HbGlwmocoY7kWbNmGXQsWLBA1JGYnZ0t2v61bt06sbzEd999V7B1NrZC9eKG
+ja0vY2U8YkO9uH3xzxEQLaJFtIgW0SJaRItoES2iRbSI1k1PKwFmmAsXLoTA
+Zo8Qy4lPP/20OENNWrFiRQE8kckCs0EsbwKbkDelra1NnAVndhhnxjcyq05B
+bMkHDx4U25I0Z84cw0x7/vz5Br379+8Xy0s01iH9F7en1tu+iLGF2NB1EOvX
+rxfT+TAGRhvRIlpEi2gRLaJFtIgW0SJaRItofSVoJXQYV10nFhUVFS5fvhwC
+s0EsJ02dOtWw6hpWiq9duxYCs0Esp61Zs0a0ZX/44YeiLZ+/V97FcRuSN2P1
+6tWGOj744APRloLYkmEVt6ijtrbWoBdjYLR1NrawfrqRfbyxHcf0e3ab7eON
+7TiGPV1wI+sgQh5bRItoES2iRbSIFtEiWkSLaBEtonXT0wpLZa/gqzmDBVgT
+H8Vdh3UY3YnlHzhwIGX+/PlF999/v+Y6DJyfwX96d2LgCCz/wQcf1NvgEoaY
+DpyF+W1xqg2m62I6LO+msWPHiragtqiOyeTsxx57LLukpERRYEO0qY7IFDiA
+Al4lO5IuAmILmCzpWsQ6RMEY3sxicL4Nt7RrWbgGVtWDcBhst73lww8/3M5a
+DK78uOPmNpvNBnfPG2NiYrTRcikyMhJ8o3Y6grgNVieAKz3lHS+vjtkKa2pq
+2qFSzXU171NoGjjY5o6g4dmFKt7aHSwoDgFVh4RShIkgLy4oBhEUiwiKRQTF
+IoJiEEExuCBvQNAeUVBXVRB36HgGE6S6Bw4Dl4Nb1qxZU8rGIwjyIoJiEEEx
+iKAYRJAXEeTFBUWbCOJfWZeJIA8uKBoR5EUEeRFBXkRQNCIoGhfkwQVBMu4y
+VVKPVpABrlVyT724PjeuzxOsT3EtHI3oi0b0RSP6PIg+j1EfuKJ2m+hTesoC
+vjYsRyBSXR7yQ0YjTxmk3axvXbh2N6Ldg2j3INo9iHY3ot2Na3d9at92BfGg
+fSv/fCcLZ1ngR5tInMWJQAk4C6eRBfj/dCEs3AgLN8LCjbBwISxcOAunkUWp
+xsJhziJC+xqc1TtmUb/t4ad5QUFoHCZoHAE0RatXr4bFd4DGiaBxIWhcCBoX
+gsaJoHHiaBwmaOzmaOwcjeK/tWHAgAFlc+fOLUhMTIQ6K1tbW88pXlFNUNlN
+UNlxVA4ElRNB5URQORFUDgQV76U2jqqEo7J/KqrwowgmjUATi2Fnzc08wP+S
+5UyH+sMOrejaGUSz4Yb8hO7XGNpwhnaEoQNh6EAYOhCGdoShHWdoM2FoM2Go
+EuiKMQTl/HRCCoczVNAEbpgP9u3bFw7C3AlxgG5SUhK0s4rTjTLS3c5CQ6Be
+nK4Vp2sLpqs4oLYjdO0IXTtC14bQteF0rSZ0rSZ0ozqnCzb1h0CG2mp4bZLF
+pxBX/btHXuvSpQu4zt/Zv39/fReAj2foAj6+T7BJE9YD/JfmFNYDUXgPXA98
+FuiB0aNHQw9YkR6wIT1gQ3rAhvSAFekBK94DUSY9EGXSA5HmPaD+CkXoewAg
+wdZDcMv3lNIW/h2QX/n9738vbgIErtDBK7R+s6Cyn/70p+n19fX6zYfKOtTJ
+pmjLFmzlzc3NRUOHDg0qj9UBjr2Vd91UGwwCcZMizUG43pY9a9ascjYS9HVA
+O8qEetMQWypiSwktnXSDi+c7An+aDb3Njzl6u5ELEgkJCaG0JeRtqkNLR7SI
+FtEiWkSLaBEtokW0iBbRIlpfCVoz/vrXv8JOWRAkqxLL6SkpKdVlZWUQmA1i
+OfPSpUvVLE+1kluJ5Wz+Xm/zIbbtlZWVYnkVbH4cXK+df8D+xMSFycnJYiPz
+x44dW/34449DYDaI5ezp06eLtowZM2aItnTY50uwpT3//POGdAcOHBDEdDbA
+QvX2FuoAQ2znXC5XcL3YXnQ8cciO1G9kw+rQ3c4TMkJGyAgZISNkhIyQETJC
+RsgIGSHDkc1atGhRi9vthiBZlVjOGzNmTEvv3r0hMBvEcgGbBYu2LaNGjRJt
+pcOGDRNtte3t7S2svhalZiWW63v06BFcr11NXH/33XeLBeyeOnVqS3NzMwRm
+g1guPXfunGjb8s9//lMUU7B48WIxXV5ra6toy/nzn/9sAFFVVSU0/LNc9wl1
+a7NQnbDrR5nZdZ/4+PhQRjLqLu5GnLCH/p0kWkSLaBEtokW0iBbRIlpEi2gR
+rZuLFpIbdYAW6vqAwYMHG2hhj2pjW2CfPXvWQCvU9QFfjhN2okW0iBbRIlpE
+i2gRLaJFtIgW0SJaROvz0ArVrThG60a2wA719v6CBQvEvOiq+6VLlxpoYbf3
+8Q3DiRbRIlpEi2gRLaJFtIgW0SJaROumpzWTldHMg2RVYjnzhRdeaPZ4PBCY
+DWI5Z/jw4aKtoKGhQcy79aGHHhLT7WtvbxfT1enrjUNsPN3OvXv3iuWBV2dD
+W1599VUxbw6mbeXKlWLejFGjRok28F8t2KQKCYr43C+S5f8AYXyxeg==\
+\>"]]
 }, Open  ]],
 
 Cell[BoxData[
@@ -176,83 +1087,15 @@ Cell[BoxData[
        "\[IndentingNewLine]", 
        RowBox[{"Graphics", "[", 
         RowBox[{
-         RowBox[{"Table", "[", 
-          RowBox[{
-           RowBox[{"{", 
-            RowBox[{
-             RowBox[{"If", "[", 
-              RowBox[{
-               RowBox[{
-                RowBox[{"data", "[", 
-                 RowBox[{"[", 
-                  RowBox[{"j", ",", "i"}], "]"}], "]"}], "\[Equal]", "1"}], 
-               ",", "White", ",", "Black"}], "]"}], ",", 
-             RowBox[{"Polygon", "[", 
-              RowBox[{"{", 
-               RowBox[{
-                RowBox[{"{", 
-                 RowBox[{"i", ",", 
-                  RowBox[{"-", "j"}]}], "}"}], ",", 
-                RowBox[{"{", 
-                 RowBox[{
-                  RowBox[{"i", "+", "1"}], ",", 
-                  RowBox[{"-", "j"}]}], "}"}], ",", 
-                RowBox[{"{", 
-                 RowBox[{
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"(", 
-                    RowBox[{
-                    RowBox[{"data", "[", 
-                    RowBox[{"[", 
-                    RowBox[{
-                    RowBox[{"j", "+", "1"}], ",", "17"}], "]"}], "]"}], "-", 
-                    "1"}], ")"}], 
-                    RowBox[{"(", 
-                    RowBox[{"i", "+", "1"}], ")"}]}], "-", 
-                   RowBox[{
-                    RowBox[{"(", 
-                    RowBox[{
-                    RowBox[{"data", "[", 
-                    RowBox[{"[", 
-                    RowBox[{
-                    RowBox[{"j", "+", "1"}], ",", "17"}], "]"}], "]"}], "-", 
-                    "2"}], ")"}], "9"}]}], ",", 
-                  RowBox[{
-                   RowBox[{"-", "j"}], "-", "1"}]}], "}"}], ",", 
-                RowBox[{"{", 
-                 RowBox[{
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"(", 
-                    RowBox[{
-                    RowBox[{"data", "[", 
-                    RowBox[{"[", 
-                    RowBox[{
-                    RowBox[{"j", "+", "1"}], ",", "17"}], "]"}], "]"}], "-", 
-                    "1"}], ")"}], 
-                    RowBox[{"(", "i", ")"}]}], "-", 
-                   RowBox[{
-                    RowBox[{"(", 
-                    RowBox[{
-                    RowBox[{"data", "[", 
-                    RowBox[{"[", 
-                    RowBox[{
-                    RowBox[{"j", "+", "1"}], ",", "17"}], "]"}], "]"}], "-", 
-                    "2"}], ")"}], "9"}]}], ",", 
-                  RowBox[{
-                   RowBox[{"-", "j"}], "-", "1"}]}], "}"}]}], "}"}], "]"}]}], 
-            "}"}], ",", 
-           RowBox[{"{", 
-            RowBox[{"i", ",", "1", ",", "16"}], "}"}], ",", 
-           RowBox[{"{", 
-            RowBox[{"j", ",", "1", ",", "38"}], "}"}]}], "]"}], ",", 
+         RowBox[{"makePic", "[", 
+          RowBox[{"Width", ",", "Height", ",", "data"}], "]"}], ",", 
          "\[IndentingNewLine]", 
          RowBox[{"PlotRange", "\[Rule]", 
           RowBox[{"{", 
            RowBox[{
             RowBox[{"{", 
-             RowBox[{"1", ",", "17"}], "}"}], ",", "All"}], "}"}]}]}], 
+             RowBox[{"1", ",", 
+              RowBox[{"Width", "+", "1"}]}], "}"}], ",", "All"}], "}"}]}]}], 
         "]"}]}], "]"}]}], ",", 
     RowBox[{"{", 
      RowBox[{"k", ",", "0", ",", "255", ",", "1"}], "}"}]}], "]"}], 
@@ -260,20 +1103,11 @@ Cell[BoxData[
  CellChangeTimes->{{3.550423302407878*^9, 3.550423453168352*^9}, {
    3.55042358437617*^9, 3.550423619887784*^9}, {3.5504236515472307`*^9, 
    3.550423688071591*^9}, {3.550423761990748*^9, 3.550423774879661*^9}, 
-   3.550423879487213*^9, 3.550424002675913*^9}],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[""], "Input",
- CellChangeTimes->{{3.550423889177475*^9, 3.550424000320307*^9}}],
-
-Cell[BoxData["\<\"rule_num_k.gif\"\>"], "Output",
- CellChangeTimes->{{3.550423911093116*^9, 3.550423954314398*^9}, 
-   3.550423992054986*^9}]
-}, Open  ]]
+   3.550423879487213*^9, 3.550424002675913*^9, {3.550840779879592*^9, 
+   3.550840801575614*^9}}]
 },
-WindowSize->{1364, 735},
-WindowMargins->{{0, Automatic}, {2, Automatic}},
+WindowSize->{948, 1078},
+WindowMargins->{{Automatic, -948}, {Automatic, 0}},
 ShowSelection->True,
 FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
 StyleDefinitions->"Default.nb"
@@ -289,22 +1123,16 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 732, 14, 50, "Input"],
+Cell[557, 20, 3922, 104, 202, "Input"],
 Cell[CellGroupData[{
-Cell[1314, 38, 3312, 95, 107, "Input"],
-Cell[4629, 135, 804, 11, 30, "Output"]
+Cell[4504, 128, 1476, 39, 69, "Input"],
+Cell[5983, 169, 53717, 900, 447, 39918, 675, "CachedBoxData", "BoxData", \
+"Output"]
 }, Open  ]],
-Cell[CellGroupData[{
-Cell[5470, 151, 201, 3, 30, "Input"],
-Cell[5674, 156, 120, 2, 30, "Output"]
-}, Open  ]],
-Cell[5809, 161, 3915, 101, 183, "Input"],
-Cell[CellGroupData[{
-Cell[9749, 266, 92, 1, 30, "Input"],
-Cell[9844, 269, 141, 2, 30, "Output"]
-}, Open  ]]
+Cell[59715, 1072, 1377, 34, 126, "Input"]
 }
 ]
 *)
 
 (* End of internal cache information *)
+
