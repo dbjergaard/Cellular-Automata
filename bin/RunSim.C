@@ -1,13 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <map>
+#include <utility>
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
-#include <vector>
-#include <bitset>
-#include <map>
 #include <ctime>
+#include <bitset>
 
 //length of Cellular Automata
 //IMPORTANT: MUST BE POWER OF 2
@@ -18,8 +18,9 @@
 #define TMAX 64
 
 using std::cout;
-using std::endl;
 using std::map;
+using std::pair;
+using std::endl;
 using std::cerr;
 using std::endl;
 using std::bitset;
@@ -36,27 +37,71 @@ void writeXpm(ofstream& xpmOutput)
   else
     cerr<<"ERROR: could not write file!\n";
 }
+double calcInformation(const bitset<SIZE>& state)
+{
+  //Calculate and return information of bitset defined as 
+  // \sum_i^n p_i log(1/p_i)
+  // where log is in base 2. 
+  //double information=0;
+  
+  int index=0;
+  double norm=0;
+  double information;
+  typedef map<int,double> histo;
+  histo pDist; //estimate p_i distribution for information calculation. 
+
+  for(unsigned int i=0; i<SIZE; i++)
+    {
+      index=
+	64*state[(i-3+SIZE)%SIZE]+
+	32*state[(i-2+SIZE)%SIZE]+
+	16*state[(i-1+SIZE)%SIZE]+
+	8*state[i]+
+	4*state[(i+1)%SIZE]+
+	2*state[(i+2)%SIZE]+
+	state[(i+1)%SIZE];
+      pDist[index]+=1.0;
+    }
+  
+  //cout<<"Histogram: "<<endl;
+  for (histo::iterator it=pDist.begin(); it!=pDist.end(); ++it)
+    {
+      norm+=it->second;
+    }
+  for (histo::iterator it=pDist.begin(); it!=pDist.end(); ++it)
+    {
+      it->second/=norm;
+      //cout <<it->first<<","<<it->second<<endl;
+      information+=it->second*log2(1/it->second);
+    }
+  
+  return information;
+}
+
 bitset<SIZE> updateState(const bitset<SIZE> currentState, const bitset<8> truthMask)
 {
   bitset<SIZE> nextState;
+
   //update mechanism borrowed from: 
   //Paul Bourke 
   //http://local.wasp.uwa.edu.au/~pbourke/fractals/ca/
   int k=0;
-  bool fixedBc=false;
   for(unsigned int i=0; i < SIZE; i++)
     {
       //compute position in "truthtable" based on previous state. Also is super fast. 
 	k=4*currentState[(i-1+SIZE)%SIZE] + 
 	  2*currentState[i] + 
 	  currentState[(i+1)%SIZE];
-	if(fixedBc)
+	
+	/*
+	if(edgeBits)
 	  {
 	    if(i==0)
-	      k=4+2*currentState[i]+currentState[(i+1)%SIZE];
+	      k=4*edgeBits->first+2*currentState[i]+currentState[(i+1)%SIZE];
 	    else if(i+1 == SIZE)
-	      k=4*currentState[(i-1+SIZE)%SIZE] + 2*currentState[i] + 1;
+	      k=4*currentState[(i-1+SIZE)%SIZE] + 2*currentState[i] + edgeBits->second;
 	  }
+	*/
       nextState.set(i,truthMask[k]);
     }
   return nextState;
@@ -74,21 +119,23 @@ void printCurrentState(const bitset<SIZE> state,ofstream& xpmOutput,bool doubleG
   xpmOutput<<endl;
 }
 
-void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen)
+void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen, int seed)
 {
   ofstream xpmOutput;
-
+  //pair<bool,bool>* edgeBits= new pair<bool,bool>(currentState[SIZE/4],currentState[3*SIZE/4]);
+  ofstream informationOutput;
   std::stringstream ofName;
   bitset<SIZE> expandState;
-  ofName <<"rule_num_"<<ruleNum<<".csv";
+  ofName <<ruleNum<<"_time_series_seed_"<<seed<<".csv";
   xpmOutput.open(ofName.str().c_str());
-
+  ofName.str("");
+  ofName <<ruleNum<<"_info_series_seed_"<<seed<<".csv";
+  informationOutput.open(ofName.str().c_str());
   bitset<8> truthMask=ruleNum;
   cout <<"Starting with Rule "<<ruleNum<<endl;
   for(unsigned int j=0; j < TMAX; j++)
     {
       printCurrentState(currentState,xpmOutput,false);
-	
       if(expandGen!=0 && j!=0 && j%expandGen==0)
       	{
       	  for(unsigned int i=SIZE/4; i < 3*SIZE/4; i++)
@@ -98,10 +145,17 @@ void runSim(int ruleNum,bitset<SIZE> currentState,int expandGen)
       	    }
 	  printCurrentState(currentState,xpmOutput,false);
 	  printCurrentState(expandState,xpmOutput,true);
-      	  currentState=expandState;
+	  currentState=expandState;
+      	  //currentState=updateState(expandState,truthMask,edgeBits);
       	}
+      //else
       currentState=updateState(currentState,truthMask);
+      informationOutput<<j<<","<<calcInformation(currentState)<<endl;;
     }  
+  /*
+  if(edgeBits)
+    delete edgeBits;
+  */
   writeXpm(xpmOutput);
   return;
 }
@@ -154,6 +208,7 @@ int main(int argc, const char* argv[])
   int ruleNum=30;
   int initNum=-1;
   int expandGen=0; //How many generations before lattice expands
+  int seed=0;
   bool initRand=false;
   bool batchMode=false;
   string opt;
@@ -170,12 +225,14 @@ int main(int argc, const char* argv[])
       else if(opt=="-r" || opt=="--rand")
 	{
 	  initRand=true;
-	  srand(time(NULL));
+	  seed=time(NULL);
+	  srand(seed);
 	}
       else if(opt=="-s" || opt=="--seed")
 	{
 	  initRand=true;
-	  srand(atoi(argv[++i]));
+	  seed=atoi(argv[++i]);
+	  srand(seed);
 	}
       else if(opt=="-f" || opt=="--fixed")
 	initRand=false;
@@ -203,15 +260,15 @@ int main(int argc, const char* argv[])
       org_table << "| <c> | <c> | <c> | <c> |"<<endl;
       for(unsigned int i=0; i<88; i++)
 	{
-	  org_table <<"| "<<"[[file:rule_num_"<<uniqueRuleTable[i]<<".gif]] Rule Number "<<uniqueRuleTable[i];
+	  org_table <<"| "<<"[[file:"<<uniqueRuleTable[i]<<"_time.gif]] Rule Number "<<uniqueRuleTable[i];
 	  if((i+1)%4==0)
 	    org_table<<"|\n";
-	  runSim(uniqueRuleTable[i],currentState,expandGen);
+	  runSim(uniqueRuleTable[i],currentState,expandGen,seed);
 	}
       org_table.close();
     }
   else
-    runSim(ruleNum,currentState,expandGen);
+    runSim(ruleNum,currentState,expandGen,seed);
 
   return 0;
 }
